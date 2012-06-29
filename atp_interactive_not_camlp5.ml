@@ -907,7 +907,7 @@ default_parser "x + 1";;
 (* Demonstrate automatic installation.                                       *)
 (* ------------------------------------------------------------------------- *)
 
-default_parser '(x1 + x2 + x3) * (1 + 2 + 3 * x + y)';;
+default_parser "(x1 + x2 + x3) * (1 + 2 + 3 * x + y)";;
 *)
 
 (* ------------------------------------------------------------------------- *)
@@ -926,7 +926,7 @@ let rec string_of_exp e =
 (* ------------------------------------------------------------------------- *)
 
 (*
-string_of_exp default_parser 'x + 3 * y';;
+string_of_exp default_parser "x + 3 * y";;
 *)
 
 (* ------------------------------------------------------------------------- *)
@@ -948,7 +948,7 @@ let rec string_of_exp pr e =
 (* Install it.                                                               *)
 (* ------------------------------------------------------------------------- *)
 
-let print_exp e = Format.print_string ("default_parser '"^string_of_exp 0 e^"'");;
+let print_exp e = Format.print_string ("default_parser ""^string_of_exp 0 e^""");;
 
 #install_printer print_exp;;
 
@@ -957,10 +957,10 @@ let print_exp e = Format.print_string ("default_parser '"^string_of_exp 0 e^"'")
 (* ------------------------------------------------------------------------- *)
 
 (*
-default_parser 'x + 3 * y';;
-default_parser '(x + 3) * y';;
-default_parser '1 + 2 + 3';;
-default_parser '((1 + 2) + 3) + 4';;
+default_parser "x + 3 * y";;
+default_parser "(x + 3) * y";;
+default_parser "1 + 2 + 3";;
+default_parser "((1 + 2) + 3) + 4";;
 *)
 
 (* ------------------------------------------------------------------------- *)
@@ -1210,7 +1210,7 @@ let print_prop_formula = print_qformula print_propvar;;
 (* ------------------------------------------------------------------------- *)
 
 (*
-let fm = default_parser 'p ==> q <=> r /\ s \/ (t <=> ~ ~u /\ v)';;
+let fm = default_parser "p ==> q <=> r /\\ s \\/ (t <=> ~ ~u /\\ v)";;
 
 And(fm,fm);;
 
@@ -1237,10 +1237,10 @@ let rec eval fm v =
 (* ------------------------------------------------------------------------- *)
 
 (*
-eval default_parser 'p /\ q ==> q /\ r'
+eval default_parser "p /\\ q ==> q /\\ r"
      (function P"p" -> true | P"q" -> false | P"r" -> true);;
 
-eval default_parser 'p /\ q ==> q /\ r'
+eval default_parser "p /\\ q ==> q /\\ r"
      (function P"p" -> true | P"q" -> true | P"r" -> false);;
 *)
 
@@ -1255,7 +1255,7 @@ let atoms fm = atom_union (fun a -> [a]) fm;;
 (* ------------------------------------------------------------------------- *)
 
 (*
-atoms default_parser 'p /\ q \/ s ==> ~p \/ (r <=> s)';;
+atoms default_parser "p /\\ q \\/ s ==> ~p \\/ (r <=> s)";;
 *)
 
 (* ------------------------------------------------------------------------- *)
@@ -1289,9 +1289,9 @@ let print_truthtable fm =
 (* ------------------------------------------------------------------------- *)
 
 (*
-print_truthtable default_parser 'p /\ q ==> q /\ r';;
+print_truthtable default_parser "p /\\ q ==> q /\\ r";;
 
-let fm = default_parser 'p /\ q ==> q /\ r';;
+let fm = default_parser "p /\\ q ==> q /\\ r";;
 
 print_truthtable fm;;
 *)
@@ -1301,9 +1301,9 @@ print_truthtable fm;;
 (* ------------------------------------------------------------------------- *)
 
 (*
-print_truthtable default_parser '((p ==> q) ==> p) ==> p';;
+print_truthtable default_parser "((p ==> q) ==> p) ==> p";;
 
-print_truthtable default_parser 'p /\ ~p';;
+print_truthtable default_parser "p /\\ ~p";;
 *)
 
 (* ------------------------------------------------------------------------- *)
@@ -1319,13 +1319,13 @@ let tautology fm =
 
 (*
 
-tautology default_parser 'p \/ ~p';;
+tautology default_parser "p \\/ ~p";;
 
-tautology default_parser 'p \/ q ==> p';;
+tautology default_parser "p \\/ q ==> p";;
 
-tautology default_parser 'p \/ q ==> q \/ (p <=> q)';;
+tautology default_parser "p \\/ q ==> q \\/ (p <=> q)";;
 
-tautology default_parser '(p \/ q) /\ ~(p /\ q) ==> (~p <=> q)';;
+tautology default_parser "(p \\/ q) /\\ ~(p /\\ q) ==> (~p <=> q)";;
 
 *)
 
@@ -1348,7 +1348,7 @@ let psubst subfn = onatoms (fun p -> tryapplyd subfn p (Atom p));;
 (* ------------------------------------------------------------------------- *)
 
 (*
-psubst (P"p" |=> default_parser 'p /\ q') default_parser 'p /\ q /\ p /\ q';;
+psubst (P"p" |=> default_parser "p /\\ q") default_parser "p /\\ q /\\ p /\\ q";;
 *)
 
 (* ------------------------------------------------------------------------- *)
@@ -1356,28 +1356,28 @@ psubst (P"p" |=> default_parser 'p /\ q') default_parser 'p /\ q /\ p /\ q';;
 (* ------------------------------------------------------------------------- *)
 
 (*
-tautology default_parser '(p ==> q) \/ (q ==> p)';;
+tautology default_parser "(p ==> q) \\/ (q ==> p)";;
 
-tautology default_parser 'p \/ (q <=> r) <=> (p \/ q <=> p \/ r)';;
+tautology default_parser "p \\/ (q <=> r) <=> (p \\/ q <=> p \\/ r)";;
 
-tautology default_parser 'p /\ q <=> ((p <=> q) <=> p \/ q)';;
+tautology default_parser "p /\\ q <=> ((p <=> q) <=> p \\/ q)";;
 
-tautology default_parser '(p ==> q) <=> (~q ==> ~p)';;
+tautology default_parser "(p ==> q) <=> (~q ==> ~p)";;
 
-tautology default_parser '(p ==> ~q) <=> (q ==> ~p)';;
+tautology default_parser "(p ==> ~q) <=> (q ==> ~p)";;
 
-tautology default_parser '(p ==> q) <=> (q ==> p)';;
+tautology default_parser "(p ==> q) <=> (q ==> p)";;
 
 (* ------------------------------------------------------------------------- *)
 (* Some logical equivalences allowing elimination of connectives.            *)
 (* ------------------------------------------------------------------------- *)
 
 forall tautology
- [default_parser 'true <=> false ==> false';
-  default_parser '~p <=> p ==> false';
-  default_parser 'p /\ q <=> (p ==> q ==> false) ==> false';
-  default_parser 'p \/ q <=> (p ==> false) ==> q';
-  default_parser '(p <=> q) <=> ((p ==> q) ==> (q ==> p) ==> false) ==> false'];;
+ [default_parser "true <=> false ==> false";
+  default_parser "~p <=> p ==> false";
+  default_parser "p /\\ q <=> (p ==> q ==> false) ==> false";
+  default_parser "p \\/ q <=> (p ==> false) ==> q";
+  default_parser "(p <=> q) <=> ((p ==> q) ==> (q ==> p) ==> false) ==> false"];;
 *)
 
 (* ------------------------------------------------------------------------- *)
@@ -1399,7 +1399,7 @@ let rec dual fm =
 (* ------------------------------------------------------------------------- *)
 
 (*
-dual default_parser 'p \/ ~p';;
+dual default_parser "p \\/ ~p";;
 *)
 
 (* ------------------------------------------------------------------------- *)
@@ -1436,9 +1436,9 @@ let rec psimplify fm =
 (* ------------------------------------------------------------------------- *)
 
 (*
-psimplify default_parser '(true ==> (x <=> false)) ==> ~(y \/ false /\ z)';;
+psimplify default_parser "(true ==> (x <=> false)) ==> ~(y \\/ false /\\ z)";;
 
-psimplify default_parser '((x ==> y) ==> true) \/ ~false';;
+psimplify default_parser "((x ==> y) ==> true) \\/ ~false";;
 *)
 
 (* ------------------------------------------------------------------------- *)
@@ -1479,7 +1479,7 @@ let nnf fm = nnf(psimplify fm);;
 (* ------------------------------------------------------------------------- *)
 
 (*
-let fm = default_parser '(p <=> q) <=> ~(r ==> s)';;
+let fm = default_parser "(p <=> q) <=> ~(r ==> s)";;
 
 let fm' = nnf fm;;
 
@@ -1510,8 +1510,8 @@ let nenf fm = nenf(psimplify fm);;
 (* ------------------------------------------------------------------------- *)
 
 (*
-tautology default_parser '(p ==> p') /\ (q ==> q') ==> (p /\ q ==> p' /\ q')';;
-tautology default_parser '(p ==> p') /\ (q ==> q') ==> (p \/ q ==> p' \/ q')';;
+tautology default_parser "(p ==> p') /\\ (q ==> q') ==> (p /\\ q ==> p' /\\ q')";;
+tautology default_parser "(p ==> p') /\\ (q ==> q') ==> (p \\/ q ==> p' \\/ q')";;
 *)
 
 (* ------------------------------------------------------------------------- *)
@@ -1542,13 +1542,13 @@ let dnf fm =
 (* ------------------------------------------------------------------------- *)
 
 (*
-let fm = default_parser '(p \/ q /\ r) /\ (~p \/ ~r)';;
+let fm = default_parser "(p \\/ q /\\ r) /\\ (~p \\/ ~r)";;
 
 dnf fm;;
 
 print_truthtable fm;;
 
-dnf default_parser 'p /\ q /\ r /\ s /\ t /\ u \/ u /\ v';;
+dnf default_parser "p /\\ q /\\ r /\\ s /\\ t /\\ u \\/ u /\\ v";;
 *)
 
 (* ------------------------------------------------------------------------- *)
@@ -1572,7 +1572,7 @@ let rec rawdnf fm =
 (* ------------------------------------------------------------------------- *)
 
 (*
-rawdnf default_parser '(p \/ q /\ r) /\ (~p \/ ~r)';;
+rawdnf default_parser "(p \\/ q /\\ r) /\\ (~p \\/ ~r)";;
 *)
 
 (* ------------------------------------------------------------------------- *)
@@ -1592,7 +1592,7 @@ let rec purednf fm =
 (* ------------------------------------------------------------------------- *)
 
 (*
-purednf default_parser '(p \/ q /\ r) /\ (~p \/ ~r)';;
+purednf default_parser "(p \\/ q /\\ r) /\\ (~p \\/ ~r)";;
 *)
 
 (* ------------------------------------------------------------------------- *)
@@ -1631,7 +1631,7 @@ let dnf fm = list_disj(map list_conj (simpdnf fm));;
 (* ------------------------------------------------------------------------- *)
 
 (*
-let fm = default_parser '(p \/ q /\ r) /\ (~p \/ ~r)';;
+let fm = default_parser "(p \\/ q /\\ r) /\\ (~p \\/ ~r)";;
 dnf fm;;
 tautology(Iff(fm,dnf fm));;
 *)
@@ -1654,7 +1654,7 @@ let cnf fm = list_conj(map list_disj (simpcnf fm));;
 (* ------------------------------------------------------------------------- *)
 
 (*
-let fm = default_parser '(p \/ q /\ r) /\ (~p \/ ~r)';;
+let fm = default_parser "(p \\/ q /\\ r) /\\ (~p \\/ ~r)";;
 cnf fm;;
 tautology(Iff(fm,cnf fm));;
 *)
@@ -1853,7 +1853,7 @@ tautology(prime 11);;
 (* ========================================================================= *)
 
 (*
-cnf default_parser 'p <=> (q <=> r)';;
+cnf default_parser "p <=> (q <=> r)";;
 *)
 
 (* ------------------------------------------------------------------------- *)
@@ -1911,7 +1911,7 @@ let defcnf fm = list_conj(map list_disj(mk_defcnf maincnf fm));;
 (* ------------------------------------------------------------------------- *)
 
 (*
-defcnf default_parser '(p \/ (q /\ ~r)) /\ s';;
+defcnf default_parser "(p \\/ (q /\\ ~r)) /\\ s";;
 *)
 
 (* ------------------------------------------------------------------------- *)
@@ -1941,7 +1941,7 @@ let defcnf fm = list_conj (map list_disj (defcnfs fm));;
 (* ------------------------------------------------------------------------- *)
 
 (*
-defcnf default_parser '(p \/ (q /\ ~r)) /\ s';;
+defcnf default_parser "(p \\/ (q /\\ ~r)) /\\ s";;
 *)
 
 (* ------------------------------------------------------------------------- *)
@@ -2191,7 +2191,7 @@ let triggers fm =
 (* ------------------------------------------------------------------------- *)
 
 (*
-triggers default_parser 'p <=> (q /\ r)';;
+triggers default_parser "p <=> (q /\\ r)";;
 *)
 
 (* ------------------------------------------------------------------------- *)
@@ -2200,9 +2200,9 @@ triggers default_parser 'p <=> (q /\ r)';;
 
 let trigger =
   let [trig_and; trig_or; trig_imp; trig_iff] = map triggers
-      [default_parser 'p <=> q /\ r'; default_parser 'p <=> q \/ r';
-       default_parser 'p <=> (q ==> r)'; default_parser 'p <=> (q <=> r)']
-  and p = default_parser 'p' and q = default_parser 'q' and r = default_parser 'r'
+      [default_parser "p <=> q /\\ r"; default_parser "p <=> q \\/ r";
+       default_parser "p <=> (q ==> r)"; default_parser "p <=> (q <=> r)"]
+  and p = default_parser "p" and q = default_parser "q" and r = default_parser "r"
   and ddnegate fm = match fm with Not(Not p) -> p | _ -> fm in
   let inst_fn [x;y;z] =
     let subfn = fpf [P"p"; P"q"; P"r"] [x; y; z] in
@@ -2659,9 +2659,9 @@ let secondary_parser = parset;;
 (* ------------------------------------------------------------------------- *)
 
 (*
-default_parser '(forall x. x < 2 ==> 2 * x <= 3) \/ false';;
+default_parser "(forall x. x < 2 ==> 2 * x <= 3) \\/ false";;
 
-secondary_parser '2 * x|';;
+secondary_parser "2 * x|";;
 *)
 
 (* ------------------------------------------------------------------------- *)
@@ -2723,9 +2723,9 @@ let print_fol_formula = print_qformula print_atom;;
 (* ------------------------------------------------------------------------- *)
 
 (*
-default_parser 'forall x y. exists z. x < z /\ y < z';;
+default_parser "forall x y. exists z. x < z /\\ y < z";;
 
-default_parser '~(forall x. P(x)) <=> exists y. ~P(y)';;
+default_parser "~(forall x. P(x)) <=> exists y. ~P(y)";;
 *)
 
 (* ------------------------------------------------------------------------- *)
@@ -2783,18 +2783,18 @@ let mod_interp n =
   (0--(n-1),func,pred);;
 
 (*
-holds bool_interp undefined default_parser 'forall x. (x = 0) \/ (x = 1)';;
+holds bool_interp undefined default_parser "forall x. (x = 0) \\/ (x = 1)";;
 
-holds (mod_interp 2) undefined default_parser 'forall x. (x = 0) \/ (x = 1)';;
+holds (mod_interp 2) undefined default_parser "forall x. (x = 0) \\/ (x = 1)";;
 
-holds (mod_interp 3) undefined default_parser 'forall x. (x = 0) \/ (x = 1)';;
+holds (mod_interp 3) undefined default_parser "forall x. (x = 0) \\/ (x = 1)";;
 
-let fm = default_parser 'forall x. ~(x = 0) ==> exists y. x * y = 1';;
+let fm = default_parser "forall x. ~(x = 0) ==> exists y. x * y = 1";;
 
 filter (fun n -> holds (mod_interp n) undefined fm) (1--45);;
 
-holds (mod_interp 3) undefined default_parser '(forall x. x = 0) ==> 1 = 0';;
-holds (mod_interp 3) undefined default_parser 'forall x. x = 0 ==> 1 = 0';;
+holds (mod_interp 3) undefined default_parser "(forall x. x = 0) ==> 1 = 0";;
+holds (mod_interp 3) undefined default_parser "forall x. x = 0 ==> 1 = 0";;
 *)
 
 (* ------------------------------------------------------------------------- *)
@@ -2880,9 +2880,9 @@ and substq subfn quant x p =
 (* ------------------------------------------------------------------------- *)
 
 (*
-subst ("y" |=> Var "x") default_parser 'forall x. x = y';;
+subst ("y" |=> Var "x") default_parser "forall x. x = y";;
 
-subst ("y" |=> Var "x") default_parser 'forall x x'. x = y ==> x = x'';;
+subst ("y" |=> Var "x") default_parser "forall x x'. x = y ==> x = x'";;
 *)
 (* ========================================================================= *)
 (* Prenex and Skolem normal forms.                                           *)
@@ -2916,7 +2916,7 @@ let rec simplify fm =
 (* ------------------------------------------------------------------------- *)
 
 (*
-simplify default_parser '(forall x y. P(x) \/ (P(y) /\ false)) ==> exists z. Q';;
+simplify default_parser "(forall x y. P(x) \\/ (P(y) /\\ false)) ==> exists z. Q";;
 *)
 
 (* ------------------------------------------------------------------------- *)
@@ -3046,7 +3046,7 @@ let skolemize fm = specialize(pnf(askolemize fm));;
 (* ------------------------------------------------------------------------- *)
 
 (*
-skolemize default_parser 'exists y. x < y ==> forall u. exists v. x * u < y * v';;
+skolemize default_parser "exists y. x < y ==> forall u. exists v. x * u < y * v";;
 
 skolemize
  <<forall x. P(x)
@@ -3125,9 +3125,9 @@ let gilmore fm =
 (* ------------------------------------------------------------------------- *)
 
 (*
-gilmore default_parser 'exists x. forall y. P(x) ==> P(y)';;
+gilmore default_parser "exists x. forall y. P(x) ==> P(y)";;
 
-let sfm = skolemize(Not default_parser 'exists x. forall y. P(x) ==> P(y)');;
+let sfm = skolemize(Not default_parser "exists x. forall y. P(x) ==> P(y)");;
 
 (* ------------------------------------------------------------------------- *)
 (* Quick example.                                                            *)
@@ -3279,15 +3279,15 @@ let unify_and_apply eqs =
   map apply eqs;;
 
 (*
-unify_and_apply [secondary_parser 'f(x,g(y))|',secondary_parser 'f(f(z),w)|'];;
+unify_and_apply [secondary_parser "f(x,g(y))|",secondary_parser "f(f(z),w)|"];;
 
-unify_and_apply [secondary_parser 'f(x,y)|',secondary_parser 'f(y,x)|'];;
+unify_and_apply [secondary_parser "f(x,y)|",secondary_parser "f(y,x)|"];;
 
-(****  unify_and_apply [secondary_parser 'f(x,g(y))|',secondary_parser 'f(y,x)|'];; *****)
+(****  unify_and_apply [secondary_parser "f(x,g(y))|",secondary_parser "f(y,x)|"];; *****)
 
-unify_and_apply [secondary_parser 'x_0|',secondary_parser 'f(x_1,x_1)|';
-                 secondary_parser 'x_1|',secondary_parser 'f(x_2,x_2)|';
-                 secondary_parser 'x_2|',secondary_parser 'f(x_3,x_3)|'];;
+unify_and_apply [secondary_parser "x_0|",secondary_parser "f(x_1,x_1)|";
+                 secondary_parser "x_1|",secondary_parser "f(x_2,x_2)|";
+                 secondary_parser "x_2|",secondary_parser "f(x_3,x_3)|"];;
 *)
 (* ========================================================================= *)
 (* Tableaux, seen as an optimized version of a Prawitz-like procedure.       *)
@@ -3358,7 +3358,7 @@ let compare fm =
 
 (*
 let p19 = compare
- default_parser 'exists x. forall y z. (P(y) ==> Q(z)) ==> P(x) ==> Q(x)';;
+ default_parser "exists x. forall y z. (P(y) ==> Q(z)) ==> P(x) ==> Q(x)";;
 
 let p20 = compare
  <<(forall x y. exists z. forall w. P(x) /\ Q(y) ==> R(z) /\ U(w))
@@ -3372,10 +3372,10 @@ let p24 = compare
    ==> (exists x. P(x) /\ R(x))>>;;
 
 let p39 = compare
- default_parser '~(exists x. forall y. P(y,x) <=> ~P(y,y))';;
+ default_parser "~(exists x. forall y. P(y,x) <=> ~P(y,y))";;
 
 let p42 = compare
- default_parser '~(exists y. forall x. P(x,y) <=> ~(exists z. P(x,z) /\ P(z,x)))';;
+ default_parser "~(exists y. forall x. P(x,y) <=> ~(exists z. P(x,z) /\\ P(z,x)))";;
 
 (***** Too slow?
 
@@ -3392,7 +3392,7 @@ let p44 = compare
    ==> (exists x. J(x) /\ ~P(x))>>;;
 
 let p59 = compare
- default_parser '(forall x. P(x) <=> ~P(f(x))) ==> (exists x. P(x) /\ ~P(f(x)))';;
+ default_parser "(forall x. P(x) <=> ~P(f(x))) ==> (exists x. P(x) /\\ ~P(f(x)))";;
 
 let p60 = compare
  <<forall x. P(x,f(x)) <=>
@@ -3484,65 +3484,65 @@ let ewd1062 = splittab
 (***********
 
 let p1 = time splittab
- default_parser 'p ==> q <=> ~q ==> ~p';;
+ default_parser "p ==> q <=> ~q ==> ~p";;
 
 let p2 = time splittab
- default_parser '~ ~p <=> p';;
+ default_parser "~ ~p <=> p";;
 
 let p3 = time splittab
- default_parser '~(p ==> q) ==> q ==> p';;
+ default_parser "~(p ==> q) ==> q ==> p";;
 
 let p4 = time splittab
- default_parser '~p ==> q <=> ~q ==> p';;
+ default_parser "~p ==> q <=> ~q ==> p";;
 
 let p5 = time splittab
- default_parser '(p \/ q ==> p \/ r) ==> p \/ (q ==> r)';;
+ default_parser "(p \\/ q ==> p \\/ r) ==> p \\/ (q ==> r)";;
 
 let p6 = time splittab
- default_parser 'p \/ ~p';;
+ default_parser "p \\/ ~p";;
 
 let p7 = time splittab
- default_parser 'p \/ ~ ~ ~p';;
+ default_parser "p \\/ ~ ~ ~p";;
 
 let p8 = time splittab
- default_parser '((p ==> q) ==> p) ==> p';;
+ default_parser "((p ==> q) ==> p) ==> p";;
 
 let p9 = time splittab
- default_parser '(p \/ q) /\ (~p \/ q) /\ (p \/ ~q) ==> ~(~q \/ ~q)';;
+ default_parser "(p \\/ q) /\\ (~p \\/ q) /\\ (p \\/ ~q) ==> ~(~q \\/ ~q)";;
 
 let p10 = time splittab
- default_parser '(q ==> r) /\ (r ==> p /\ q) /\ (p ==> q /\ r) ==> (p <=> q)';;
+ default_parser "(q ==> r) /\\ (r ==> p /\\ q) /\\ (p ==> q /\\ r) ==> (p <=> q)";;
 
 let p11 = time splittab
- default_parser 'p <=> p';;
+ default_parser "p <=> p";;
 
 let p12 = time splittab
- default_parser '((p <=> q) <=> r) <=> (p <=> (q <=> r))';;
+ default_parser "((p <=> q) <=> r) <=> (p <=> (q <=> r))";;
 
 let p13 = time splittab
- default_parser 'p \/ q /\ r <=> (p \/ q) /\ (p \/ r)';;
+ default_parser "p \\/ q /\\ r <=> (p \\/ q) /\\ (p \\/ r)";;
 
 let p14 = time splittab
- default_parser '(p <=> q) <=> (q \/ ~p) /\ (~q \/ p)';;
+ default_parser "(p <=> q) <=> (q \\/ ~p) /\\ (~q \\/ p)";;
 
 let p15 = time splittab
- default_parser 'p ==> q <=> ~p \/ q';;
+ default_parser "p ==> q <=> ~p \\/ q";;
 
 let p16 = time splittab
- default_parser '(p ==> q) \/ (q ==> p)';;
+ default_parser "(p ==> q) \\/ (q ==> p)";;
 
 let p17 = time splittab
- default_parser 'p /\ (q ==> r) ==> s <=> (~p \/ q \/ s) /\ (~p \/ ~r \/ s)';;
+ default_parser "p /\\ (q ==> r) ==> s <=> (~p \\/ q \\/ s) /\\ (~p \\/ ~r \\/ s)";;
 
 (* ------------------------------------------------------------------------- *)
 (* Pelletier problems: monadic predicate logic.                              *)
 (* ------------------------------------------------------------------------- *)
 
 let p18 = time splittab
- default_parser 'exists y. forall x. P(y) ==> P(x)';;
+ default_parser "exists y. forall x. P(y) ==> P(x)";;
 
 let p19 = time splittab
- default_parser 'exists x. forall y z. (P(y) ==> Q(z)) ==> P(x) ==> Q(x)';;
+ default_parser "exists x. forall y z. (P(y) ==> Q(z)) ==> P(x) ==> Q(x)";;
 
 let p20 = time splittab
  <<(forall x y. exists z. forall w. P(x) /\ Q(y) ==> R(z) /\ U(w))
@@ -3553,10 +3553,10 @@ let p21 = time splittab
    ==> (exists x. P <=> Q(x))>>;;
 
 let p22 = time splittab
- default_parser '(forall x. P <=> Q(x)) ==> (P <=> (forall x. Q(x)))';;
+ default_parser "(forall x. P <=> Q(x)) ==> (P <=> (forall x. Q(x)))";;
 
 let p23 = time splittab
- default_parser '(forall x. P \/ Q(x)) <=> P \/ (forall x. Q(x))';;
+ default_parser "(forall x. P \\/ Q(x)) <=> P \\/ (forall x. Q(x))";;
 
 let p24 = time splittab
  <<~(exists x. U(x) /\ Q(x)) /\
@@ -3624,7 +3624,7 @@ let p34 = time splittab
     ((exists x. P(x)) <=> (forall y. P(y))))>>;;
 
 let p35 = time splittab
- default_parser 'exists x y. P(x,y) ==> (forall x y. P(x,y))';;
+ default_parser "exists x y. P(x,y) ==> (forall x y. P(x,y))";;
 
 (* ------------------------------------------------------------------------- *)
 (* Full predicate logic (without identity and functions).                    *)
@@ -3655,7 +3655,7 @@ let p38 = time splittab
      (exists z w. P(z) /\ R(x,w) /\ R(w,z))))>>;;
 
 let p39 = time splittab
- default_parser '~(exists x. forall y. P(y,x) <=> ~P(y,y))';;
+ default_parser "~(exists x. forall y. P(y,x) <=> ~P(y,y))";;
 
 let p40 = time splittab
  <<(exists y. forall x. P(x,y) <=> P(x,x))
@@ -3666,7 +3666,7 @@ let p41 = time splittab
   ==> ~(exists z. forall x. P(x,z))>>;;
 
 let p42 = time splittab
- default_parser '~(exists y. forall x. P(x,y) <=> ~(exists z. P(x,z) /\ P(z,x)))';;
+ default_parser "~(exists y. forall x. P(x,y) <=> ~(exists z. P(x,z) /\\ P(z,x)))";;
 
 let p43 = time splittab
  <<(forall x y. Q(x,y) <=> forall z. P(z,x) <=> P(z,y))
@@ -3728,7 +3728,7 @@ let p58 = time splittab
     ((P(x) /\ Q(y)) ==> ((P(v) \/ R(w))  /\ (R(z) ==> Q(v))))>>;;
 
 let p59 = time splittab
- default_parser '(forall x. P(x) <=> ~P(f(x))) ==> (exists x. P(x) /\ ~P(f(x)))';;
+ default_parser "(forall x. P(x) <=> ~P(f(x))) ==> (exists x. P(x) /\\ ~P(f(x)))";;
 
 let p60 = time splittab
  <<forall x. P(x,f(x)) <=>
@@ -3823,7 +3823,7 @@ let davis_putnam_example = time splittab
 (* Barber's paradox is an example of why we need factoring.                  *)
 (* ------------------------------------------------------------------------- *)
 
-let barb = default_parser '~(exists b. forall x. shaves(b,x) <=> ~shaves(x,x))';;
+let barb = default_parser "~(exists b. forall x. shaves(b,x) <=> ~shaves(x,x))";;
 
 (*
 simpcnf(skolemize(Not barb));;
@@ -4035,65 +4035,65 @@ let resolution fm =
 (***********
 
 let p1 = time presolution
- default_parser 'p ==> q <=> ~q ==> ~p';;
+ default_parser "p ==> q <=> ~q ==> ~p";;
 
 let p2 = time presolution
- default_parser '~ ~p <=> p';;
+ default_parser "~ ~p <=> p";;
 
 let p3 = time presolution
- default_parser '~(p ==> q) ==> q ==> p';;
+ default_parser "~(p ==> q) ==> q ==> p";;
 
 let p4 = time presolution
- default_parser '~p ==> q <=> ~q ==> p';;
+ default_parser "~p ==> q <=> ~q ==> p";;
 
 let p5 = time presolution
- default_parser '(p \/ q ==> p \/ r) ==> p \/ (q ==> r)';;
+ default_parser "(p \\/ q ==> p \\/ r) ==> p \\/ (q ==> r)";;
 
 let p6 = time presolution
- default_parser 'p \/ ~p';;
+ default_parser "p \\/ ~p";;
 
 let p7 = time presolution
- default_parser 'p \/ ~ ~ ~p';;
+ default_parser "p \\/ ~ ~ ~p";;
 
 let p8 = time presolution
- default_parser '((p ==> q) ==> p) ==> p';;
+ default_parser "((p ==> q) ==> p) ==> p";;
 
 let p9 = time presolution
- default_parser '(p \/ q) /\ (~p \/ q) /\ (p \/ ~q) ==> ~(~q \/ ~q)';;
+ default_parser "(p \\/ q) /\\ (~p \\/ q) /\\ (p \\/ ~q) ==> ~(~q \\/ ~q)";;
 
 let p10 = time presolution
- default_parser '(q ==> r) /\ (r ==> p /\ q) /\ (p ==> q /\ r) ==> (p <=> q)';;
+ default_parser "(q ==> r) /\\ (r ==> p /\\ q) /\\ (p ==> q /\\ r) ==> (p <=> q)";;
 
 let p11 = time presolution
- default_parser 'p <=> p';;
+ default_parser "p <=> p";;
 
 let p12 = time presolution
- default_parser '((p <=> q) <=> r) <=> (p <=> (q <=> r))';;
+ default_parser "((p <=> q) <=> r) <=> (p <=> (q <=> r))";;
 
 let p13 = time presolution
- default_parser 'p \/ q /\ r <=> (p \/ q) /\ (p \/ r)';;
+ default_parser "p \\/ q /\\ r <=> (p \\/ q) /\\ (p \\/ r)";;
 
 let p14 = time presolution
- default_parser '(p <=> q) <=> (q \/ ~p) /\ (~q \/ p)';;
+ default_parser "(p <=> q) <=> (q \\/ ~p) /\\ (~q \\/ p)";;
 
 let p15 = time presolution
- default_parser 'p ==> q <=> ~p \/ q';;
+ default_parser "p ==> q <=> ~p \\/ q";;
 
 let p16 = time presolution
- default_parser '(p ==> q) \/ (q ==> p)';;
+ default_parser "(p ==> q) \\/ (q ==> p)";;
 
 let p17 = time presolution
- default_parser 'p /\ (q ==> r) ==> s <=> (~p \/ q \/ s) /\ (~p \/ ~r \/ s)';;
+ default_parser "p /\\ (q ==> r) ==> s <=> (~p \\/ q \\/ s) /\\ (~p \\/ ~r \\/ s)";;
 
 (* ------------------------------------------------------------------------- *)
 (* Monadic Predicate Logic.                                                  *)
 (* ------------------------------------------------------------------------- *)
 
 let p18 = time presolution
- default_parser 'exists y. forall x. P(y) ==> P(x)';;
+ default_parser "exists y. forall x. P(y) ==> P(x)";;
 
 let p19 = time presolution
- default_parser 'exists x. forall y z. (P(y) ==> Q(z)) ==> P(x) ==> Q(x)';;
+ default_parser "exists x. forall y z. (P(y) ==> Q(z)) ==> P(x) ==> Q(x)";;
 
 let p20 = time presolution
  <<(forall x y. exists z. forall w. P(x) /\ Q(y) ==> R(z) /\ U(w))
@@ -4104,10 +4104,10 @@ let p21 = time presolution
    ==> (exists x. P <=> Q(x))>>;;
 
 let p22 = time presolution
- default_parser '(forall x. P <=> Q(x)) ==> (P <=> (forall x. Q(x)))';;
+ default_parser "(forall x. P <=> Q(x)) ==> (P <=> (forall x. Q(x)))";;
 
 let p23 = time presolution
- default_parser '(forall x. P \/ Q(x)) <=> P \/ (forall x. Q(x))';;
+ default_parser "(forall x. P \\/ Q(x)) <=> P \\/ (forall x. Q(x))";;
 
 let p24 = time presolution
  <<~(exists x. U(x) /\ Q(x)) /\
@@ -4174,7 +4174,7 @@ let p34 = time presolution
     ((exists x. P(x)) <=> (forall y. P(y))))>>;;
 
 let p35 = time presolution
- default_parser 'exists x y. P(x,y) ==> (forall x y. P(x,y))';;
+ default_parser "exists x y. P(x,y) ==> (forall x y. P(x,y))";;
 
 (* ------------------------------------------------------------------------- *)
 (*  Full predicate logic (without Identity and Functions)                    *)
@@ -4209,7 +4209,7 @@ let p38 = time presolution
  ***)
 
 let p39 = time presolution
- default_parser '~(exists x. forall y. P(y,x) <=> ~P(y,y))';;
+ default_parser "~(exists x. forall y. P(y,x) <=> ~P(y,y))";;
 
 let p40 = time presolution
  <<(exists y. forall x. P(x,y) <=> P(x,x))
@@ -4222,7 +4222,7 @@ let p41 = time presolution
 (*** Also very slow
 
 let p42 = time presolution
- default_parser '~(exists y. forall x. P(x,y) <=> ~(exists z. P(x,z) /\ P(z,x)))';;
+ default_parser "~(exists y. forall x. P(x,y) <=> ~(exists z. P(x,z) /\\ P(z,x)))";;
 
  ***)
 
@@ -4298,7 +4298,7 @@ let p58 = time presolution
     ((P(x) /\ Q(y)) ==> ((P(v) \/ R(w))  /\ (R(z) ==> Q(v))))>>;;
 
 let p59 = time presolution
- default_parser '(forall x. P(x) <=> ~P(f(x))) ==> (exists x. P(x) /\ ~P(f(x)))';;
+ default_parser "(forall x. P(x) <=> ~P(f(x))) ==> (exists x. P(x) /\\ ~P(f(x)))";;
 
 let p60 = time presolution
  <<forall x. P(x,f(x)) <=>
@@ -4404,65 +4404,65 @@ let gilmore_1 = resolution
 (************
 
 let p1 = time resolution
- default_parser 'p ==> q <=> ~q ==> ~p';;
+ default_parser "p ==> q <=> ~q ==> ~p";;
 
 let p2 = time resolution
- default_parser '~ ~p <=> p';;
+ default_parser "~ ~p <=> p";;
 
 let p3 = time resolution
- default_parser '~(p ==> q) ==> q ==> p';;
+ default_parser "~(p ==> q) ==> q ==> p";;
 
 let p4 = time resolution
- default_parser '~p ==> q <=> ~q ==> p';;
+ default_parser "~p ==> q <=> ~q ==> p";;
 
 let p5 = time resolution
- default_parser '(p \/ q ==> p \/ r) ==> p \/ (q ==> r)';;
+ default_parser "(p \\/ q ==> p \\/ r) ==> p \\/ (q ==> r)";;
 
 let p6 = time resolution
- default_parser 'p \/ ~p';;
+ default_parser "p \\/ ~p";;
 
 let p7 = time resolution
- default_parser 'p \/ ~ ~ ~p';;
+ default_parser "p \\/ ~ ~ ~p";;
 
 let p8 = time resolution
- default_parser '((p ==> q) ==> p) ==> p';;
+ default_parser "((p ==> q) ==> p) ==> p";;
 
 let p9 = time resolution
- default_parser '(p \/ q) /\ (~p \/ q) /\ (p \/ ~q) ==> ~(~q \/ ~q)';;
+ default_parser "(p \\/ q) /\\ (~p \\/ q) /\\ (p \\/ ~q) ==> ~(~q \\/ ~q)";;
 
 let p10 = time resolution
- default_parser '(q ==> r) /\ (r ==> p /\ q) /\ (p ==> q /\ r) ==> (p <=> q)';;
+ default_parser "(q ==> r) /\\ (r ==> p /\\ q) /\\ (p ==> q /\\ r) ==> (p <=> q)";;
 
 let p11 = time resolution
- default_parser 'p <=> p';;
+ default_parser "p <=> p";;
 
 let p12 = time resolution
- default_parser '((p <=> q) <=> r) <=> (p <=> (q <=> r))';;
+ default_parser "((p <=> q) <=> r) <=> (p <=> (q <=> r))";;
 
 let p13 = time resolution
- default_parser 'p \/ q /\ r <=> (p \/ q) /\ (p \/ r)';;
+ default_parser "p \\/ q /\\ r <=> (p \\/ q) /\\ (p \\/ r)";;
 
 let p14 = time resolution
- default_parser '(p <=> q) <=> (q \/ ~p) /\ (~q \/ p)';;
+ default_parser "(p <=> q) <=> (q \\/ ~p) /\\ (~q \\/ p)";;
 
 let p15 = time resolution
- default_parser 'p ==> q <=> ~p \/ q';;
+ default_parser "p ==> q <=> ~p \\/ q";;
 
 let p16 = time resolution
- default_parser '(p ==> q) \/ (q ==> p)';;
+ default_parser "(p ==> q) \\/ (q ==> p)";;
 
 let p17 = time resolution
- default_parser 'p /\ (q ==> r) ==> s <=> (~p \/ q \/ s) /\ (~p \/ ~r \/ s)';;
+ default_parser "p /\\ (q ==> r) ==> s <=> (~p \\/ q \\/ s) /\\ (~p \\/ ~r \\/ s)";;
 
 (* ------------------------------------------------------------------------- *)
 (* Monadic Predicate Logic.                                                  *)
 (* ------------------------------------------------------------------------- *)
 
 let p18 = time resolution
- default_parser 'exists y. forall x. P(y) ==> P(x)';;
+ default_parser "exists y. forall x. P(y) ==> P(x)";;
 
 let p19 = time resolution
- default_parser 'exists x. forall y z. (P(y) ==> Q(z)) ==> P(x) ==> Q(x)';;
+ default_parser "exists x. forall y z. (P(y) ==> Q(z)) ==> P(x) ==> Q(x)";;
 
 let p20 = time resolution
  <<(forall x y. exists z. forall w. P(x) /\ Q(y) ==> R(z) /\ U(w)) ==>
@@ -4470,13 +4470,13 @@ let p20 = time resolution
    (exists z. R(z))>>;;
 
 let p21 = time resolution
- default_parser '(exists x. P ==> Q(x)) /\ (exists x. Q(x) ==> P) ==> (exists x. P <=> Q(x))';;
+ default_parser "(exists x. P ==> Q(x)) /\\ (exists x. Q(x) ==> P) ==> (exists x. P <=> Q(x))";;
 
 let p22 = time resolution
- default_parser '(forall x. P <=> Q(x)) ==> (P <=> (forall x. Q(x)))';;
+ default_parser "(forall x. P <=> Q(x)) ==> (P <=> (forall x. Q(x)))";;
 
 let p23 = time resolution
- default_parser '(forall x. P \/ Q(x)) <=> P \/ (forall x. Q(x))';;
+ default_parser "(forall x. P \\/ Q(x)) <=> P \\/ (forall x. Q(x))";;
 
 let p24 = time resolution
  <<~(exists x. U(x) /\ Q(x)) /\
@@ -4543,7 +4543,7 @@ let p34 = time resolution
   ((exists x. P(x)) <=> (forall y. P(y))))>>;;
 
 let p35 = time resolution
- default_parser 'exists x y. P(x,y) ==> (forall x y. P(x,y))';;
+ default_parser "exists x y. P(x,y) ==> (forall x y. P(x,y))";;
 
 (* ------------------------------------------------------------------------- *)
 (*  Full predicate logic (without Identity and Functions)                    *)
@@ -4578,7 +4578,7 @@ let p38 = time resolution
  ***)
 
 let p39 = time resolution
- default_parser '~(exists x. forall y. P(y,x) <=> ~P(y,y))';;
+ default_parser "~(exists x. forall y. P(y,x) <=> ~P(y,y))";;
 
 let p40 = time resolution
  <<(exists y. forall x. P(x,y) <=> P(x,x))
@@ -4591,7 +4591,7 @@ let p41 = time resolution
 (*** Also very slow
 
 let p42 = time resolution
- default_parser '~(exists y. forall x. P(x,y) <=> ~(exists z. P(x,z) /\ P(z,x)))';;
+ default_parser "~(exists y. forall x. P(x,y) <=> ~(exists z. P(x,z) /\\ P(z,x)))";;
 
  ***)
 
@@ -4667,7 +4667,7 @@ let p58 = time resolution
     ((P(x) /\ Q(y)) ==> ((P(v) \/ R(w))  /\ (R(z) ==> Q(v))))>>;;
 
 let p59 = time resolution
- default_parser '(forall x. P(x) <=> ~P(f(x))) ==> (exists x. P(x) /\ ~P(f(x)))';;
+ default_parser "(forall x. P(x) <=> ~P(f(x))) ==> (exists x. P(x) /\\ ~P(f(x)))";;
 
 let p60 = time resolution
  <<forall x. P(x,f(x)) <=>
@@ -4819,7 +4819,7 @@ let p32 = hornprove
 
 (****************
 
-hornprove default_parser '(p \/ q) /\ (~p \/ q) /\ (p \/ ~q) ==> ~(~q \/ ~q)';;
+hornprove default_parser "(p \\/ q) /\\ (~p \\/ q) /\\ (p \\/ ~q) ==> ~(~q \\/ ~q)";;
 
 **********)
 *)
@@ -4952,9 +4952,9 @@ prolog badrules
 (* ------------------------------------------------------------------------- *)
 
 (*
-tab default_parser 'forall a. ~(P(a) /\ (forall y z. Q(y) \/ R(z)) /\ ~P(a))';;
+tab default_parser "forall a. ~(P(a) /\\ (forall y z. Q(y) \\/ R(z)) /\\ ~P(a))";;
 
-tab default_parser 'forall a. ~(P(a) /\ ~P(a) /\ (forall y z. Q(y) \/ R(z)))';;
+tab default_parser "forall a. ~(P(a) /\\ ~P(a) /\\ (forall y z. Q(y) \\/ R(z)))";;
 
 (* ------------------------------------------------------------------------- *)
 (* The interesting example where tableaux connections make the proof longer. *)
@@ -5104,65 +5104,65 @@ let steamroller = meson
 (* ------------------------------------------------------------------------- *)
 
 let prop_1 = time meson
- default_parser 'p ==> q <=> ~q ==> ~p';;
+ default_parser "p ==> q <=> ~q ==> ~p";;
 
 let prop_2 = time meson
- default_parser '~ ~p <=> p';;
+ default_parser "~ ~p <=> p";;
 
 let prop_3 = time meson
- default_parser '~(p ==> q) ==> q ==> p';;
+ default_parser "~(p ==> q) ==> q ==> p";;
 
 let prop_4 = time meson
- default_parser '~p ==> q <=> ~q ==> p';;
+ default_parser "~p ==> q <=> ~q ==> p";;
 
 let prop_5 = time meson
- default_parser '(p \/ q ==> p \/ r) ==> p \/ (q ==> r)';;
+ default_parser "(p \\/ q ==> p \\/ r) ==> p \\/ (q ==> r)";;
 
 let prop_6 = time meson
- default_parser 'p \/ ~p';;
+ default_parser "p \\/ ~p";;
 
 let prop_7 = time meson
- default_parser 'p \/ ~ ~ ~p';;
+ default_parser "p \\/ ~ ~ ~p";;
 
 let prop_8 = time meson
- default_parser '((p ==> q) ==> p) ==> p';;
+ default_parser "((p ==> q) ==> p) ==> p";;
 
 let prop_9 = time meson
- default_parser '(p \/ q) /\ (~p \/ q) /\ (p \/ ~q) ==> ~(~q \/ ~q)';;
+ default_parser "(p \\/ q) /\\ (~p \\/ q) /\\ (p \\/ ~q) ==> ~(~q \\/ ~q)";;
 
 let prop_10 = time meson
- default_parser '(q ==> r) /\ (r ==> p /\ q) /\ (p ==> q /\ r) ==> (p <=> q)';;
+ default_parser "(q ==> r) /\\ (r ==> p /\\ q) /\\ (p ==> q /\\ r) ==> (p <=> q)";;
 
 let prop_11 = time meson
- default_parser 'p <=> p';;
+ default_parser "p <=> p";;
 
 let prop_12 = time meson
- default_parser '((p <=> q) <=> r) <=> (p <=> (q <=> r))';;
+ default_parser "((p <=> q) <=> r) <=> (p <=> (q <=> r))";;
 
 let prop_13 = time meson
- default_parser 'p \/ q /\ r <=> (p \/ q) /\ (p \/ r)';;
+ default_parser "p \\/ q /\\ r <=> (p \\/ q) /\\ (p \\/ r)";;
 
 let prop_14 = time meson
- default_parser '(p <=> q) <=> (q \/ ~p) /\ (~q \/ p)';;
+ default_parser "(p <=> q) <=> (q \\/ ~p) /\\ (~q \\/ p)";;
 
 let prop_15 = time meson
- default_parser 'p ==> q <=> ~p \/ q';;
+ default_parser "p ==> q <=> ~p \\/ q";;
 
 let prop_16 = time meson
- default_parser '(p ==> q) \/ (q ==> p)';;
+ default_parser "(p ==> q) \\/ (q ==> p)";;
 
 let prop_17 = time meson
- default_parser 'p /\ (q ==> r) ==> s <=> (~p \/ q \/ s) /\ (~p \/ ~r \/ s)';;
+ default_parser "p /\\ (q ==> r) ==> s <=> (~p \\/ q \\/ s) /\\ (~p \\/ ~r \\/ s)";;
 
 (* ------------------------------------------------------------------------- *)
 (* Monadic Predicate Logic.                                                  *)
 (* ------------------------------------------------------------------------- *)
 
 let p18 = time meson
- default_parser 'exists y. forall x. P(y) ==> P(x)';;
+ default_parser "exists y. forall x. P(y) ==> P(x)";;
 
 let p19 = time meson
- default_parser 'exists x. forall y z. (P(y) ==> Q(z)) ==> P(x) ==> Q(x)';;
+ default_parser "exists x. forall y z. (P(y) ==> Q(z)) ==> P(x) ==> Q(x)";;
 
 let p20 = time meson
  <<(forall x y. exists z. forall w. P(x) /\ Q(y) ==> R(z) /\ U(w)) ==>
@@ -5174,10 +5174,10 @@ let p21 = time meson
    ==> (exists x. P <=> Q(x))>>;;
 
 let p22 = time meson
- default_parser '(forall x. P <=> Q(x)) ==> (P <=> (forall x. Q(x)))';;
+ default_parser "(forall x. P <=> Q(x)) ==> (P <=> (forall x. Q(x)))";;
 
 let p23 = time meson
- default_parser '(forall x. P \/ Q(x)) <=> P \/ (forall x. Q(x))';;
+ default_parser "(forall x. P \\/ Q(x)) <=> P \\/ (forall x. Q(x))";;
 
 let p24 = time meson
  <<~(exists x. U(x) /\ Q(x)) /\
@@ -5244,7 +5244,7 @@ let p34 = time meson
     ((exists x. P(x)) <=> (forall y. P(y))))>>;;
 
 let p35 = time meson
- default_parser 'exists x y. P(x,y) ==> (forall x y. P(x,y))';;
+ default_parser "exists x y. P(x,y) ==> (forall x y. P(x,y))";;
 
 (* ------------------------------------------------------------------------- *)
 (*  Full predicate logic (without Identity and Functions)                    *)
@@ -5275,7 +5275,7 @@ let p38 = time meson
      (exists z w. P(z) /\ R(x,w) /\ R(w,z))))>>;;
 
 let p39 = time meson
- default_parser '~(exists x. forall y. P(y,x) <=> ~P(y,y))';;
+ default_parser "~(exists x. forall y. P(y,x) <=> ~P(y,y))";;
 
 let p40 = time meson
  <<(exists y. forall x. P(x,y) <=> P(x,x))
@@ -5286,7 +5286,7 @@ let p41 = time meson
   ==> ~(exists z. forall x. P(x,z))>>;;
 
 let p42 = time meson
- default_parser '~(exists y. forall x. P(x,y) <=> ~(exists z. P(x,z) /\ P(z,x)))';;
+ default_parser "~(exists y. forall x. P(x,y) <=> ~(exists z. P(x,z) /\\ P(z,x)))";;
 
 let p43 = time meson
  <<(forall x y. Q(x,y) <=> forall z. P(z,x) <=> P(z,y))
@@ -5348,7 +5348,7 @@ let p58 = time meson
     ((P(x) /\ Q(y)) ==> ((P(v) \/ R(w))  /\ (R(z) ==> Q(v))))>>;;
 
 let p59 = time meson
- default_parser '(forall x. P(x) <=> ~P(f(x))) ==> (exists x. P(x) /\ ~P(f(x)))';;
+ default_parser "(forall x. P(x) <=> ~P(f(x))) ==> (exists x. P(x) /\\ ~P(f(x)))";;
 
 let p60 = time meson
  <<forall x. P(x,f(x)) <=>
@@ -5479,8 +5479,8 @@ let rec skolems fms corr =
 let skolemizes fms = fst(skolems fms []);;
 
 (*
-skolemizes [default_parser 'exists x y. x + y = 2';
-            default_parser 'forall x. exists y. x + 1 = y'];;
+skolemizes [default_parser "exists x y. x + y = 2";
+            default_parser "forall x. exists y. x + 1 = y"];;
 *)
 (* ========================================================================= *)
 (* First order logic with equality.                                          *)
@@ -5548,7 +5548,7 @@ let predicate_congruence (p,n) =
 (* ------------------------------------------------------------------------- *)
 
 let equivalence_axioms =
-  [default_parser 'forall x. x = x'; default_parser 'forall x y z. x = y /\ x = z ==> y = z'];;
+  [default_parser "forall x. x = x"; default_parser "forall x y z. x = y /\\ x = z ==> y = z"];;
 
 let equalitize fm =
   let allpreds = predicates fm in
@@ -5679,7 +5679,7 @@ time meson fm;;
 (* ------------------------------------------------------------------------- *)
 
 let fm = equalitize
- default_parser 'forall c. f(f(f(f(f(c))))) = c /\ f(f(f(c))) = c ==> f(c) = c';;
+ default_parser "forall c. f(f(f(f(f(c))))) = c /\\ f(f(f(c))) = c ==> f(c) = c";;
 
 time meson fm;;
 
@@ -5849,7 +5849,7 @@ let ccvalid fm =
 ccvalid <<f(f(f(f(f(c))))) = c /\ f(f(f(c))) = c
           ==> f(c) = c \/ f(g(c)) = g(f(c))>>;;
 
-ccvalid default_parser 'f(f(f(f(c)))) = c /\ f(f(c)) = c ==> f(c) = c';;
+ccvalid default_parser "f(f(f(f(c)))) = c /\\ f(f(c)) = c ==> f(c) = c";;
 
 (* ------------------------------------------------------------------------- *)
 (* For debugging. Maybe I will incorporate into a prettyprinter one day.     *)
@@ -5897,9 +5897,9 @@ let rec rewrite eqs tm =
 (* ------------------------------------------------------------------------- *)
 
 (*
-rewrite [default_parser '0 + x = x'; default_parser 'S(x) + y = S(x + y)';
-         default_parser '0 * x = 0'; default_parser 'S(x) * y = y + x * y']
-        secondary_parser 'S(S(S(0))) * S(S(0)) + S(S(S(S(0))))|';;
+rewrite [default_parser "0 + x = x"; default_parser "S(x) + y = S(x + y)";
+         default_parser "0 * x = 0"; default_parser "S(x) * y = y + x * y"]
+        secondary_parser "S(S(S(0))) * S(S(0)) + S(S(S(S(0))))|";;
 *)
 
 (* ------------------------------------------------------------------------- *)
@@ -5929,11 +5929,11 @@ let rec termsize tm =
 (* ------------------------------------------------------------------------- *)
 
 (*
-let s = secondary_parser 'f(x,x,x)|' and t = secondary_parser 'g(x,y)|';;
+let s = secondary_parser "f(x,x,x)|" and t = secondary_parser "g(x,y)|";;
 
 termsize s > termsize t;;
 
-let i = ("y" |=> secondary_parser 'f(x,x,x)|');;
+let i = ("y" |=> secondary_parser "f(x,x,x)|");;
 
 termsize (tsubst i s) > termsize (tsubst i t);;
 *)
@@ -6013,7 +6013,7 @@ let critical_pairs fma fmb =
 (* ------------------------------------------------------------------------- *)
 
 (*
-let eq = default_parser 'f(f(x)) = g(x)' in critical_pairs eq eq;;
+let eq = default_parser "f(f(x)) = g(x)" in critical_pairs eq eq;;
 *)
 
 (* ------------------------------------------------------------------------- *)
@@ -6062,14 +6062,14 @@ let rec complete ord (eqs,def,crits) =
 
 (*
 let eqs =
-  [default_parser '1 * x = x'; default_parser 'i(x) * x = 1'; default_parser '(x * y) * z = x * y * z'];;
+  [default_parser "1 * x = x"; default_parser "i(x) * x = 1"; default_parser "(x * y) * z = x * y * z"];;
 
 let ord = lpo_ge (weight ["1"; "*"; "i"]);;
 
 let eqs' = complete ord
   (eqs,[],unions(allpairs critical_pairs eqs eqs));;
 
-rewrite eqs' secondary_parser 'i(x * i(x)) * (i(i((y * z) * u) * y) * i(u))|';;
+rewrite eqs' secondary_parser "i(x * i(x)) * (i(i((y * z) * u) * y) * i(u))|";;
 *)
 
 (* ------------------------------------------------------------------------- *)
@@ -6109,7 +6109,7 @@ let complete_and_simplify wts eqs =
 
 (*
 complete_and_simplify ["1"; "*"; "i"]
-  [default_parser 'i(a) * (a * b) = b'];;
+  [default_parser "i(a) * (a * b) = b"];;
 
 (* ------------------------------------------------------------------------- *)
 (* Auxiliary result used to justify extension of language for cancellation.  *)
@@ -6119,7 +6119,7 @@ complete_and_simplify ["1"; "*"; "i"]
  <<(forall x y z. x * y = x * z ==> y = z) <=>
    (forall x z. exists w. forall y. z = x * y ==> w = y)>>;;
 
-skolemize default_parser 'forall x z. exists w. forall y. z = x * y ==> w = y';;
+skolemize default_parser "forall x z. exists w. forall y. z = x * y ==> w = y";;
 *)
 
 (* ------------------------------------------------------------------------- *)
@@ -6131,8 +6131,8 @@ skolemize default_parser 'forall x z. exists w. forall y. z = x * y ==> w = y';;
 #trace complete;;
 
 complete_and_simplify ["1"; "*"; "i"]
- [default_parser '(x * y) * z = x * (y * z)';
-  default_parser '1 * x = x'; default_parser 'x * 1 = x'; default_parser 'x * x = 1'];;
+ [default_parser "(x * y) * z = x * (y * z)";
+  default_parser "1 * x = x"; default_parser "x * 1 = x"; default_parser "x * x = 1"];;
 
  ********************)
 
@@ -6141,7 +6141,7 @@ complete_and_simplify ["1"; "*"; "i"]
 (* ------------------------------------------------------------------------- *)
 
 (*
-let eqs =  [default_parser '(a * b) * (b * c) = b'];;
+let eqs =  [default_parser "(a * b) * (b * c) = b"];;
 
 complete_and_simplify ["*"] eqs;;
 
@@ -6152,7 +6152,7 @@ complete_and_simplify ["*"] eqs;;
 (******** This works, but takes a long time
 
 let eqs =
- [default_parser '(x * y) * z = x * y * z'; default_parser '1 * x = x'; default_parser 'x * i(x) = 1'];;
+ [default_parser "(x * y) * z = x * y * z"; default_parser "1 * x = x"; default_parser "x * i(x) = 1"];;
 
 complete_and_simplify ["1"; "*"; "i"] eqs;;
 
@@ -6166,10 +6166,10 @@ complete_and_simplify ["1"; "*"; "i"] eqs;;
  <<(forall x y z. x * y = x * z ==> y = z) <=>
    (forall x z. exists w. forall y. z = x * y ==> w = y)>>;;
 
-skolemize default_parser 'forall x z. exists w. forall y. z = x * y ==> w = y';;
+skolemize default_parser "forall x z. exists w. forall y. z = x * y ==> w = y";;
 
 let eqs =
-  [default_parser 'f(a,a*b) = b'; default_parser 'g(a*b,b) = a'; default_parser '1 * a = a'; default_parser 'a * 1 = a'];;
+  [default_parser "f(a,a*b) = b"; default_parser "g(a*b,b) = a"; default_parser "1 * a = a"; default_parser "a * 1 = a"];;
 
 complete_and_simplify ["1"; "*"; "f"; "g"] eqs;;
 
@@ -6177,7 +6177,7 @@ complete_and_simplify ["1"; "*"; "f"; "g"] eqs;;
 (* K&B example 7, where we need to divide through.                           *)
 (* ------------------------------------------------------------------------- *)
 
-let eqs =  [default_parser 'f(a,f(b,c,a),d) = c'];;
+let eqs =  [default_parser "f(a,f(b,c,a),d) = c"];;
 
 (*********** Can't orient
 
@@ -6185,8 +6185,8 @@ complete_and_simplify ["f"] eqs;;
 
 *************)
 
-let eqs =  [default_parser 'f(a,f(b,c,a),d) = c'; default_parser 'f(a,b,c) = g(a,b)';
-                     default_parser 'g(a,b) = h(b)'];;
+let eqs =  [default_parser "f(a,f(b,c,a),d) = c"; default_parser "f(a,b,c) = g(a,b)";
+                     default_parser "g(a,b) = h(b)"];;
 
 complete_and_simplify ["h"; "g"; "f"] eqs;;
 
@@ -6202,7 +6202,7 @@ complete_and_simplify ["h"; "g"; "f"] eqs;;
 (* ------------------------------------------------------------------------- *)
 
 let eqs =
- [default_parser '1 * x = x'; default_parser 'i(x) * x = 1'; default_parser '(x * y) * z = x * y * z'];;
+ [default_parser "1 * x = x"; default_parser "i(x) * x = 1"; default_parser "(x * y) * z = x * y * z"];;
 
 complete_and_simplify ["1"; "*"; "i"] eqs;;
 
@@ -6212,7 +6212,7 @@ complete_and_simplify ["1"; "*"; "i"] eqs;;
 (* ------------------------------------------------------------------------- *)
 
 let eqs =
- [default_parser '(x * y) * z = x * y * z'; default_parser '1 * x = x'; default_parser 'i(x) * x = 1'];;
+ [default_parser "(x * y) * z = x * y * z"; default_parser "1 * x = x"; default_parser "i(x) * x = 1"];;
 
 complete_and_simplify ["1"; "*"; "i"] eqs;;
 
@@ -6223,7 +6223,7 @@ complete_and_simplify ["1"; "*"; "i"] eqs;;
 (**************
 
 let eqs =
- [default_parser '1 * x = x'; default_parser 'i(x) * x = 1'; default_parser '(x * y) * z = x * y * z'];;
+ [default_parser "1 * x = x"; default_parser "i(x) * x = 1"; default_parser "(x * y) * z = x * y * z"];;
 
 complete_and_simplify ["1"; "i"; "*"] eqs;;
  *************)
@@ -6233,7 +6233,7 @@ complete_and_simplify ["1"; "i"; "*"] eqs;;
 (* ------------------------------------------------------------------------- *)
 
 let eqs =
- [default_parser '(x * y) * z = x * y * z'; default_parser 'x * 1 = x'; default_parser 'x * i(x) = 1'];;
+ [default_parser "(x * y) * z = x * y * z"; default_parser "x * 1 = x"; default_parser "x * i(x) = 1"];;
 
 complete_and_simplify ["1"; "*"; "i"] eqs;;
 
@@ -6241,11 +6241,11 @@ complete_and_simplify ["1"; "*"; "i"] eqs;;
 (* Inverse property (K&B example 4).                                         *)
 (* ------------------------------------------------------------------------- *)
 
-let eqs =  [default_parser 'i(a) * (a * b) = b'];;
+let eqs =  [default_parser "i(a) * (a * b) = b"];;
 
 complete_and_simplify ["1"; "*"; "i"] eqs;;
 
-let eqs =  [default_parser 'a * (i(a) * b) = b'];;
+let eqs =  [default_parser "a * (i(a) * b) = b"];;
 
 complete_and_simplify ["1"; "*"; "i"] eqs;;
 
@@ -6254,9 +6254,9 @@ complete_and_simplify ["1"; "*"; "i"] eqs;;
 (* ------------------------------------------------------------------------- *)
 
 let eqs =
- [default_parser '(x * y) * z = x * y * z';
-  default_parser '1 * x = x'; default_parser '11 * x = x';
-  default_parser 'i(x) * x = 1'; default_parser 'j(x) * x = 11'];;
+ [default_parser "(x * y) * z = x * y * z";
+  default_parser "1 * x = x"; default_parser "11 * x = x";
+  default_parser "i(x) * x = 1"; default_parser "j(x) * x = 11"];;
 
 complete_and_simplify ["1"; "11"; "*"; "i"; "j"] eqs;;
 
@@ -6264,7 +6264,7 @@ complete_and_simplify ["1"; "11"; "*"; "i"; "j"] eqs;;
 (* Central groupoids (K&B example 6).                                        *)
 (* ------------------------------------------------------------------------- *)
 
-let eqs =  [default_parser '(a * b) * (b * c) = b'];;
+let eqs =  [default_parser "(a * b) * (b * c) = b"];;
 
 complete_and_simplify ["*"] eqs;;
 
@@ -6272,7 +6272,7 @@ complete_and_simplify ["*"] eqs;;
 (* Random axiom (K&B example 7).                                             *)
 (* ------------------------------------------------------------------------- *)
 
-let eqs =  [default_parser 'f(a,f(b,c,a),d) = c'];;
+let eqs =  [default_parser "f(a,f(b,c,a),d) = c"];;
 
 (*********** Can't orient
 
@@ -6280,8 +6280,8 @@ complete_and_simplify ["f"] eqs;;
 
 *************)
 
-let eqs =  [default_parser 'f(a,f(b,c,a),d) = c'; default_parser 'f(a,b,c) = g(a,b)';
-                     default_parser 'g(a,b) = h(b)'];;
+let eqs =  [default_parser "f(a,f(b,c,a),d) = c"; default_parser "f(a,b,c) = g(a,b)";
+                     default_parser "g(a,b) = h(b)"];;
 
 complete_and_simplify ["h"; "g"; "f"] eqs;;
 
@@ -6291,7 +6291,7 @@ complete_and_simplify ["h"; "g"; "f"] eqs;;
 
 (************* Can't orient
 
-let eqs =  [default_parser '(a * b) * (c * b * a) = b'];;
+let eqs =  [default_parser "(a * b) * (c * b * a) = b"];;
 
 complete_and_simplify ["*"] eqs;;
 
@@ -6301,26 +6301,26 @@ complete_and_simplify ["*"] eqs;;
 (* The cancellation law (K&B example 9).                                     *)
 (* ------------------------------------------------------------------------- *)
 
-let eqs =  [default_parser 'f(a,a*b) = b'; default_parser 'g(a*b,b) = a'];;
+let eqs =  [default_parser "f(a,a*b) = b"; default_parser "g(a*b,b) = a"];;
 
 complete_and_simplify ["*"; "f"; "g"] eqs;;
 
 let eqs =
-  [default_parser 'f(a,a*b) = b'; default_parser 'g(a*b,b) = a'; default_parser '1 * a = a'; default_parser 'a * 1 = a'];;
+  [default_parser "f(a,a*b) = b"; default_parser "g(a*b,b) = a"; default_parser "1 * a = a"; default_parser "a * 1 = a"];;
 
 complete_and_simplify ["1"; "*"; "f"; "g"] eqs;;
 
 (**** Just for fun; these aren't tried by Knuth and Bendix
 
 let eqs =
-  [default_parser '(x * y) * z = x * y * z';
-   default_parser 'f(a,a*b) = b'; default_parser 'g(a*b,b) = a'; default_parser '1 * a = a'; default_parser 'a * 1 = a'];;
+  [default_parser "(x * y) * z = x * y * z";
+   default_parser "f(a,a*b) = b"; default_parser "g(a*b,b) = a"; default_parser "1 * a = a"; default_parser "a * 1 = a"];;
 
 complete_and_simplify ["1"; "*"; "f"; "g"] eqs;;
 
 let eqs =
-  [default_parser '(x * y) * z = x * y * z';
-   default_parser 'f(a,a*b) = b'; default_parser 'g(a*b,b) = a'];;
+  [default_parser "(x * y) * z = x * y * z";
+   default_parser "f(a,a*b) = b"; default_parser "g(a*b,b) = a"];;
 
 complete_and_simplify ["*"; "f"; "g"] eqs;;
 
@@ -6333,13 +6333,13 @@ complete_and_simplify ["f"; "g"; "*"] eqs;;
 (* ------------------------------------------------------------------------- *)
 
 let eqs =
- [default_parser 'a * \(a,b) = b'; default_parser '/(a,b) * b = a'; default_parser '1 * a = a'; default_parser 'a * 1 = a'];;
+ [default_parser "a * \\(a,b) = b"; default_parser "/(a,b) * b = a"; default_parser "1 * a = a"; default_parser "a * 1 = a"];;
 
 complete_and_simplify ["1"; "*"; "\\"; "/"] eqs;;
 
 let eqs =
- [default_parser 'a * \(a,b) = b'; default_parser '/(a,b) * b = a'; default_parser '1 * a = a'; default_parser 'a * 1 = a';
-  default_parser 'f(a,a*b) = b'; default_parser 'g(a*b,b) = a'];;
+ [default_parser "a * \\(a,b) = b"; default_parser "/(a,b) * b = a"; default_parser "1 * a = a"; default_parser "a * 1 = a";
+  default_parser "f(a,a*b) = b"; default_parser "g(a*b,b) = a"];;
 
 complete_and_simplify ["1"; "*"; "\\"; "/"; "f"; "g"] eqs;;
 
@@ -6348,11 +6348,11 @@ complete_and_simplify ["1"; "*"; "\\"; "/"; "f"; "g"] eqs;;
 (* ------------------------------------------------------------------------- *)
 
 let eqs =
- [default_parser '(x * y) * z = x * y * z';
-  default_parser '1 * 1 = 1';
-  default_parser 'a * i(a) = 1';
-  default_parser 'f(1,a,b) = a';
-  default_parser 'f(a*b,a,b) = g(a*b,b)'];;
+ [default_parser "(x * y) * z = x * y * z";
+  default_parser "1 * 1 = 1";
+  default_parser "a * i(a) = 1";
+  default_parser "f(1,a,b) = a";
+  default_parser "f(a*b,a,b) = g(a*b,b)"];;
 
 (******** this is not expected to terminate
 
@@ -6367,7 +6367,7 @@ complete_and_simplify ["1"; "g"; "f"; "*"; "i"] eqs;;
 (******** This works, but takes a long time
 
 let eqs =
- [default_parser '(x * y) * z = x * y * z'; default_parser '1 * x = x'; default_parser 'x * i(x) = 1'];;
+ [default_parser "(x * y) * z = x * y * z"; default_parser "1 * x = x"; default_parser "x * i(x) = 1"];;
 
 complete_and_simplify ["1"; "*"; "i"] eqs;;
 
@@ -6382,7 +6382,7 @@ complete_and_simplify ["1"; "*"; "i"] eqs;;
  ****)
 
 let eqs =
- [default_parser '(x * y) * z = x * y * z'; default_parser 'x * 1 = x'; default_parser 'i(x) * x = 1'];;
+ [default_parser "(x * y) * z = x * y * z"; default_parser "x * 1 = x"; default_parser "i(x) * x = 1"];;
 
 complete_and_simplify ["1"; "*"; "i"] eqs;;
 
@@ -6391,9 +6391,9 @@ complete_and_simplify ["1"; "*"; "i"] eqs;;
 (* ------------------------------------------------------------------------- *)
 
 let eqs =
- [default_parser '(x * y) * z = x * y * z';
-  default_parser '1 * x = x'; default_parser '11 * x = x';
-  default_parser 'x * i(x) = 1'; default_parser 'x * j(x) = 11'];;
+ [default_parser "(x * y) * z = x * y * z";
+  default_parser "1 * x = x"; default_parser "11 * x = x";
+  default_parser "x * i(x) = 1"; default_parser "x * j(x) = 11"];;
 
 (******** This seems to be too slow. K&B encounter a similar problem
 
@@ -6408,10 +6408,10 @@ complete_and_simplify ["1"; "11"; "*"; "i"; "j"] eqs;;
 (********** According to KB, this wouldn't be expected to work
 
 let eqs =
- [default_parser '(x * y) * z = x * y * z';
-  default_parser '1 * x = x';
-  default_parser 'prime(a) * a = star(a)';
-  default_parser 'star(a) * b = b'];;
+ [default_parser "(x * y) * z = x * y * z";
+  default_parser "1 * x = x";
+  default_parser "prime(a) * a = star(a)";
+  default_parser "star(a) * b = b"];;
 
 complete_and_simplify ["1"; "*"; "star"; "prime"] eqs;;
 
@@ -6420,24 +6420,24 @@ complete_and_simplify ["1"; "*"; "star"; "prime"] eqs;;
 (*********** These seem too slow too. Maybe just a bad ordering?
 
 let eqs =
- [default_parser '(x * y) * z = x * y * z';
-  default_parser '1 * x = x';
-  default_parser 'hash(a) * dollar(a) * a = star(a)';
-  default_parser 'star(a) * b = b';
-  default_parser 'a * hash(a) = 1';
-  default_parser 'a * 1 = hash(hash(a))';
-  default_parser 'hash(hash(hash(a))) = hash(a)'];;
+ [default_parser "(x * y) * z = x * y * z";
+  default_parser "1 * x = x";
+  default_parser "hash(a) * dollar(a) * a = star(a)";
+  default_parser "star(a) * b = b";
+  default_parser "a * hash(a) = 1";
+  default_parser "a * 1 = hash(hash(a))";
+  default_parser "hash(hash(hash(a))) = hash(a)"];;
 
 complete_and_simplify ["1"; "hash"; "star"; "*"; "dollar"] eqs;;
 
 let eqs =
- [default_parser '(x * y) * z = x * y * z';
-  default_parser '1 * x = x';
-  default_parser 'hash(a) * dollar(a) * a = star(a)';
-  default_parser 'star(a) * b = b';
-  default_parser 'a * hash(a) = 1';
-  default_parser 'hash(hash(a)) = a * 1';
-  default_parser 'hash(hash(hash(a))) = hash(a)'];;
+ [default_parser "(x * y) * z = x * y * z";
+  default_parser "1 * x = x";
+  default_parser "hash(a) * dollar(a) * a = star(a)";
+  default_parser "star(a) * b = b";
+  default_parser "a * hash(a) = 1";
+  default_parser "hash(hash(a)) = a * 1";
+  default_parser "hash(hash(hash(a))) = hash(a)"];;
 
 complete_and_simplify ["1"; "star"; "*"; "hash"; "dollar"] eqs;;
 
@@ -6448,10 +6448,10 @@ complete_and_simplify ["1"; "star"; "*"; "hash"; "dollar"] eqs;;
 (* ------------------------------------------------------------------------- *)
 
 let eqs =
- [default_parser '(a * a) * a = one(a)';
-  default_parser 'a * (a * a) = two(a)';
-  default_parser '(a * b) * (b * c) = b';
-  default_parser 'two(a) * b = a * b'];;
+ [default_parser "(a * a) * a = one(a)";
+  default_parser "a * (a * a) = two(a)";
+  default_parser "(a * b) * (b * c) = b";
+  default_parser "two(a) * b = a * b"];;
 
 complete_and_simplify ["one"; "two"; "*"] eqs;;
 
@@ -6462,9 +6462,9 @@ complete_and_simplify ["one"; "two"; "*"] eqs;;
 (******** Not ordered right...
 
 let eqs =
- [default_parser '(a*a * a) = one(a)';
-  default_parser '(a * a*a) = two(a)';
-  default_parser '(a*b * b*c) = b'];;
+ [default_parser "(a*a * a) = one(a)";
+  default_parser "(a * a*a) = two(a)";
+  default_parser "(a*b * b*c) = b"];;
 
 complete_and_simplify ["*"; "one"; "two"] eqs;;
 
@@ -6474,7 +6474,7 @@ complete_and_simplify ["*"; "one"; "two"] eqs;;
 (* Simply congruence closure.                                                *)
 (* ------------------------------------------------------------------------- *)
 
-let eqs =  [default_parser 'f(f(f(f(f(1))))) = 1'; default_parser 'f(f(f(1))) = 1'];;
+let eqs =  [default_parser "f(f(f(f(f(1))))) = 1"; default_parser "f(f(f(1))) = 1"];;
 
 complete_and_simplify ["1"; "f"] eqs;;
 
@@ -6485,17 +6485,17 @@ complete_and_simplify ["1"; "f"] eqs;;
 (*****************
 
 let eqs =
- [default_parser 'x * i(y * (((z * i(z)) * i(u * y)) * x)) = u'];;
+ [default_parser "x * i(y * (((z * i(z)) * i(u * y)) * x)) = u"];;
 
 complete_and_simplify ["1"; "*"; "i"] eqs;;
 
 let eqs =
- [default_parser '((1 / (x / (y / (((x / x) / x) / z)))) / z) = y'];;
+ [default_parser "((1 / (x / (y / (((x / x) / x) / z)))) / z) = y"];;
 
 complete_and_simplify ["1"; "/"] eqs;;
 
 let eqs =
- [default_parser 'i(x * i(x)) * (i(i((y * z) * u) * y) * i(u)) = z'];;
+ [default_parser "i(x * i(x)) * (i(i((y * z) * u) * y) * i(u)) = z"];;
 
 complete_and_simplify ["*"; "i"] eqs;;
 
@@ -6505,7 +6505,7 @@ complete_and_simplify ["*"; "i"] eqs;;
 (* A rather simple example from Baader & Nipkow, p. 141.                     *)
 (* ------------------------------------------------------------------------- *)
 
-let eqs =  [default_parser 'f(f(x)) = g(x)'];;
+let eqs =  [default_parser "f(f(x)) = g(x)"];;
 
 complete_and_simplify ["g"; "f"] eqs;;
 *)
@@ -6515,7 +6515,7 @@ complete_and_simplify ["g"; "f"] eqs;;
 (* ------------------------------------------------------------------------- *)
 
 let eqs =
- [default_parser '(x * y) * z = x * (y * z)'; default_parser '1 * x = x'; default_parser 'x * 1 = x'; default_parser 'x * x = 1']
+ [default_parser "(x * y) * z = x * (y * z)"; default_parser "1 * x = x"; default_parser "x * 1 = x"; default_parser "x * x = 1"]
 and wts = ["1"; "*"; "i"];;
 
 let ord = lpo_ge (weight wts);;
@@ -6549,14 +6549,14 @@ let eqs2,def2,crits2 = funpow 123 (complete1 ord) (eqs,def,crits);;
 
 (*
 let eqs =
- [default_parser 'f(f(x)) = f(x)';
-  default_parser 'g(g(x)) = f(x)';
-  default_parser 'f(g(x)) = g(x)';
-  default_parser 'g(f(x)) = f(x)'];;
+ [default_parser "f(f(x)) = f(x)";
+  default_parser "g(g(x)) = f(x)";
+  default_parser "f(g(x)) = g(x)";
+  default_parser "g(f(x)) = f(x)"];;
 
 complete_and_simplify ["f"; "g"] eqs;;
 
-let eqs =  [default_parser 'f(g(f(x))) = g(x)'];;
+let eqs =  [default_parser "f(g(f(x))) = g(x)"];;
 
 complete_and_simplify ["f"; "g"] eqs;;
 
@@ -6565,14 +6565,14 @@ complete_and_simplify ["f"; "g"] eqs;;
 (* ------------------------------------------------------------------------- *)
 
 let eqs =
- [default_parser '0 + y = y';
-  default_parser 'SUC(x) + y = SUC(x + y)';
-  default_parser 'append(nil,l) = l';
-  default_parser 'append(h::t,l) = h::append(t,l)';
-  default_parser 'length(nil) = 0';
-  default_parser 'length(h::t) = SUC(length(t))';
-  default_parser 'rev(nil) = nil';
-  default_parser 'rev(h::t) = append(rev(t),h::nil)'];;
+ [default_parser "0 + y = y";
+  default_parser "SUC(x) + y = SUC(x + y)";
+  default_parser "append(nil,l) = l";
+  default_parser "append(h::t,l) = h::append(t,l)";
+  default_parser "length(nil) = 0";
+  default_parser "length(h::t) = SUC(length(t))";
+  default_parser "rev(nil) = nil";
+  default_parser "rev(h::t) = append(rev(t),h::nil)"];;
 
 complete_and_simplify
    ["0"; "nil"; "SUC"; "::"; "+"; "length"; "append"; "rev"] eqs;;
@@ -6582,32 +6582,32 @@ let iprove eqs' tm =
    ["0"; "nil"; "SUC"; "::"; "+"; "append"; "rev"; "length"]
    (tm :: eqs' @ eqs);;
 
-iprove [] default_parser 'x + 0 = x';;
+iprove [] default_parser "x + 0 = x";;
 
-iprove [] default_parser 'x + SUC(y) = SUC(x + y)';;
+iprove [] default_parser "x + SUC(y) = SUC(x + y)";;
 
-iprove [] default_parser '(x + y) + z = x + y + z';;
+iprove [] default_parser "(x + y) + z = x + y + z";;
 
-iprove [] default_parser 'length(append(x,y)) = length(x) + length(y)';;
+iprove [] default_parser "length(append(x,y)) = length(x) + length(y)";;
 
-iprove [] default_parser 'append(append(x,y),z) = append(x,append(y,z))';;
+iprove [] default_parser "append(append(x,y),z) = append(x,append(y,z))";;
 
-iprove [] default_parser 'append(x,nil) = x';;
+iprove [] default_parser "append(x,nil) = x";;
 
-iprove [default_parser 'append(append(x,y),z) = append(x,append(y,z))';
-        default_parser 'append(x,nil) = x']
-        default_parser 'rev(append(x,y)) = append(rev(y),rev(x))';;
+iprove [default_parser "append(append(x,y),z) = append(x,append(y,z))";
+        default_parser "append(x,nil) = x"]
+        default_parser "rev(append(x,y)) = append(rev(y),rev(x))";;
 
-iprove [default_parser 'rev(append(x,y)) = append(rev(y),rev(x))';
-        default_parser 'append(x,nil) = x';
-        default_parser 'append(append(x,y),z) = append(x,append(y,z))']
-        default_parser 'rev(rev(x)) = x';;
+iprove [default_parser "rev(append(x,y)) = append(rev(y),rev(x))";
+        default_parser "append(x,nil) = x";
+        default_parser "append(append(x,y),z) = append(x,append(y,z))"]
+        default_parser "rev(rev(x)) = x";;
 
 (* ------------------------------------------------------------------------- *)
 (* Here it's not immediately so obvious since we get extra equs.             *)
 (* ------------------------------------------------------------------------- *)
 
-iprove [] default_parser 'rev(rev(x)) = x';;
+iprove [] default_parser "rev(rev(x)) = x";;
 
 (* ------------------------------------------------------------------------- *)
 (* With fewer lemmas, it may just need more time or may not terminate.       *)
@@ -6615,8 +6615,8 @@ iprove [] default_parser 'rev(rev(x)) = x';;
 
 (********* not enough lemmas...or maybe it just needs more runtime
 
-iprove [default_parser 'rev(append(x,y)) = append(rev(y),rev(x))']
-        default_parser 'rev(rev(x)) = x';;
+iprove [default_parser "rev(append(x,y)) = append(rev(y),rev(x))"]
+        default_parser "rev(rev(x)) = x";;
 
  *********)
 
@@ -6624,7 +6624,7 @@ iprove [default_parser 'rev(append(x,y)) = append(rev(y),rev(x))']
 (* Now something actually false...                                           *)
 (* ------------------------------------------------------------------------- *)
 
-iprove [] default_parser 'length(append(x,y)) = length(x)';; (*** try something false ***)
+iprove [] default_parser "length(append(x,y)) = length(x)";; (*** try something false ***)
 
 *************)
 *)
@@ -6976,8 +6976,8 @@ paramodulation
 (* ========================================================================= *)
 
 (***
-meson default_parser 'forall x. p(x)';;
-tab default_parser 'forall x. p(x)';;
+meson default_parser "forall x. p(x)";;
+tab default_parser "forall x. p(x)";;
  ***)
 
 (* ------------------------------------------------------------------------- *)
@@ -6985,7 +6985,7 @@ tab default_parser 'forall x. p(x)';;
 (* ------------------------------------------------------------------------- *)
 
 (***
-resolution default_parser 'forall x. p(x)';;
+resolution default_parser "forall x. p(x)";;
  ***)
 
 (* ------------------------------------------------------------------------- *)
@@ -7038,7 +7038,7 @@ aedecide los;;
 (* ------------------------------------------------------------------------- *)
 
 (*
-let fm = default_parser '(forall x. p(x)) \/ (exists y. p(y))';;
+let fm = default_parser "(forall x. p(x)) \\/ (exists y. p(y))";;
 
 pnf fm;;
 
@@ -7074,9 +7074,9 @@ aedecide
 
 (*** This is p18
 
-aedecide default_parser 'exists y. forall x. P(y) ==> P(x)';;
+aedecide default_parser "exists y. forall x. P(y) ==> P(x)";;
 
-davisputnam default_parser 'exists y. forall x. P(y) ==> P(x)';;
+davisputnam default_parser "exists y. forall x. P(y) ==> P(x)";;
 
  ***)
 
@@ -7109,7 +7109,7 @@ let rec miniscope fm =
 (* ------------------------------------------------------------------------- *)
 
 (*
-miniscope(nnf default_parser 'exists y. forall x. P(y) ==> P(x)');;
+miniscope(nnf default_parser "exists y. forall x. P(y) ==> P(x)");;
 
 let fm = miniscope(nnf
  <<(forall x y. exists z. forall w. P(x) /\ Q(y) ==> R(z) /\ U(w))
@@ -7188,7 +7188,7 @@ map anglicize_syllogism all_valid_syllogisms;;
 
 let all_possible_syllogisms' =
   let p =
-    default_parser '(exists x. P(x)) /\ (exists x. M(x)) /\ (exists x. S(x))' in
+    default_parser "(exists x. P(x)) /\\ (exists x. M(x)) /\\ (exists x. S(x))" in
   map (fun t -> Imp(p,t)) all_possible_syllogisms;;
 
 (*
@@ -7247,10 +7247,10 @@ let decide_fmp fm =
 
 (*
 decide_fmp
- default_parser '(forall x y. R(x,y) \/ R(y,x)) ==> forall x. R(x,x)';;
+ default_parser "(forall x y. R(x,y) \\/ R(y,x)) ==> forall x. R(x,x)";;
 
 decide_fmp
- default_parser '(forall x y z. R(x,y) /\ R(y,z) ==> R(x,z)) ==> forall x. R(x,x)';;
+ default_parser "(forall x y z. R(x,y) /\\ R(y,z) ==> R(x,z)) ==> forall x. R(x,x)";;
 
 (*** This fails to terminate: has countermodels, but only infinite ones
 decide_fmp
@@ -7425,17 +7425,17 @@ let quelim_dlo =
 (* ------------------------------------------------------------------------- *)
 
 (*
-quelim_dlo default_parser 'forall x y. exists z. z < x /\ z < y';;
+quelim_dlo default_parser "forall x y. exists z. z < x /\\ z < y";;
 
-quelim_dlo default_parser 'exists z. z < x /\ z < y';;
+quelim_dlo default_parser "exists z. z < x /\\ z < y";;
 
-quelim_dlo default_parser 'exists z. x < z /\ z < y';;
+quelim_dlo default_parser "exists z. x < z /\\ z < y";;
 
-quelim_dlo default_parser '(forall x. x < a ==> x < b)';;
+quelim_dlo default_parser "(forall x. x < a ==> x < b)";;
 
-quelim_dlo default_parser 'forall a b. (forall x. x < a ==> x < b) <=> a <= b';;
+quelim_dlo default_parser "forall a b. (forall x. x < a ==> x < b) <=> a <= b";;
 
-quelim_dlo default_parser 'forall a b. (forall x. x < a <=> x < b) <=> a = b';;
+quelim_dlo default_parser "forall a b. (forall x. x < a <=> x < b) <=> a = b";;
 
 quelim_dlo <<exists x y z. forall u.
                  x < x \/ ~x < u \/ (x < y /\ y < z /\ ~x < z)>>;;
@@ -7444,54 +7444,54 @@ quelim_dlo <<exists x y z. forall u.
 (* More tests (not in the text).                                             *)
 (* ------------------------------------------------------------------------- *)
 
-time quelim_dlo default_parser 'forall x. exists y. x < y';;
+time quelim_dlo default_parser "forall x. exists y. x < y";;
 
-time quelim_dlo default_parser 'forall x y z. x < y /\ y < z ==> x < z';;
+time quelim_dlo default_parser "forall x y z. x < y /\\ y < z ==> x < z";;
 
-time quelim_dlo default_parser 'forall x y. x < y \/ (x = y) \/ y < x';;
+time quelim_dlo default_parser "forall x y. x < y \\/ (x = y) \\/ y < x";;
 
-time quelim_dlo default_parser 'exists x y. x < y /\ y < x';;
+time quelim_dlo default_parser "exists x y. x < y /\\ y < x";;
 
-time quelim_dlo default_parser 'forall x y. exists z. z < x /\ x < y';;
+time quelim_dlo default_parser "forall x y. exists z. z < x /\\ x < y";;
 
-time quelim_dlo default_parser 'exists z. z < x /\ x < y';;
+time quelim_dlo default_parser "exists z. z < x /\\ x < y";;
 
-time quelim_dlo default_parser 'forall x y. exists z. z < x /\ z < y';;
+time quelim_dlo default_parser "forall x y. exists z. z < x /\\ z < y";;
 
-time quelim_dlo default_parser 'forall x y. x < y ==> exists z. x < z /\ z < y';;
+time quelim_dlo default_parser "forall x y. x < y ==> exists z. x < z /\\ z < y";;
 
 time quelim_dlo
-  default_parser 'forall x y. ~(x = y) ==> exists u. u < x /\ (y < u \/ x < y)';;
+  default_parser "forall x y. ~(x = y) ==> exists u. u < x /\\ (y < u \\/ x < y)";;
 
-time quelim_dlo default_parser 'exists x. x = x';;
+time quelim_dlo default_parser "exists x. x = x";;
 
-time quelim_dlo default_parser 'exists x. x = x /\ x = y';;
+time quelim_dlo default_parser "exists x. x = x /\\ x = y";;
 
-time quelim_dlo default_parser 'exists z. x < z /\ z < y';;
+time quelim_dlo default_parser "exists z. x < z /\\ z < y";;
 
-time quelim_dlo default_parser 'exists z. x <= z /\ z <= y';;
+time quelim_dlo default_parser "exists z. x <= z /\\ z <= y";;
 
-time quelim_dlo default_parser 'exists z. x < z /\ z <= y';;
+time quelim_dlo default_parser "exists z. x < z /\\ z <= y";;
 
-time quelim_dlo default_parser 'forall x y z. exists u. u < x /\ u < y /\ u < z';;
+time quelim_dlo default_parser "forall x y z. exists u. u < x /\\ u < y /\\ u < z";;
 
-time quelim_dlo default_parser 'forall y. x < y /\ y < z ==> w < z';;
+time quelim_dlo default_parser "forall y. x < y /\\ y < z ==> w < z";;
 
-time quelim_dlo default_parser 'forall x y. x < y';;
+time quelim_dlo default_parser "forall x y. x < y";;
 
-time quelim_dlo default_parser 'exists z. z < x /\ x < y';;
+time quelim_dlo default_parser "exists z. z < x /\\ x < y";;
 
-time quelim_dlo default_parser 'forall a b. (forall x. x < a ==> x < b) <=> a <= b';;
+time quelim_dlo default_parser "forall a b. (forall x. x < a ==> x < b) <=> a <= b";;
 
-time quelim_dlo default_parser 'forall x. x < a ==> x < b';;
+time quelim_dlo default_parser "forall x. x < a ==> x < b";;
 
-time quelim_dlo default_parser 'forall x. x < a ==> x <= b';;
+time quelim_dlo default_parser "forall x. x < a ==> x <= b";;
 
-time quelim_dlo default_parser 'forall a b. exists x. ~(x = a) \/ ~(x = b) \/ (a = b)';;
+time quelim_dlo default_parser "forall a b. exists x. ~(x = a) \\/ ~(x = b) \\/ (a = b)";;
 
-time quelim_dlo default_parser 'forall x y. x <= y \/ x > y';;
+time quelim_dlo default_parser "forall x y. x <= y \\/ x > y";;
 
-time quelim_dlo default_parser 'forall x y. x <= y \/ x < y';;
+time quelim_dlo default_parser "forall x y. x <= y \\/ x < y";;
 *)
 (* ========================================================================= *)
 (* Cooper's algorithm for Presburger arithmetic.                             *)
@@ -7746,16 +7746,16 @@ let integer_qelim =
 (* ------------------------------------------------------------------------- *)
 
 (*
-integer_qelim default_parser 'forall x y. ~(2 * x + 1 = 2 * y)';;
+integer_qelim default_parser "forall x y. ~(2 * x + 1 = 2 * y)";;
 
-integer_qelim default_parser 'forall x. exists y. 2 * y <= x /\ x < 2 * (y + 1)';;
+integer_qelim default_parser "forall x. exists y. 2 * y <= x /\\ x < 2 * (y + 1)";;
 
-integer_qelim default_parser 'exists x y. 4 * x - 6 * y = 1';;
+integer_qelim default_parser "exists x y. 4 * x - 6 * y = 1";;
 
 integer_qelim <<forall x. ~divides(2,x) /\ divides(3,x-1) <=>
                           divides(12,x-1) \/ divides(12,x-7)>>;;
 
-integer_qelim default_parser 'forall x. b < x ==> a <= x';;
+integer_qelim default_parser "forall x. b < x ==> a <= x";;
 *)
 
 (* ------------------------------------------------------------------------- *)
@@ -7777,52 +7777,52 @@ let natural_qelim =
   integer_qelim ** relativize(fun x -> Atom(R("<=",[zero; Var x])));;
 
 (*
-natural_qelim default_parser 'forall d. exists x y. 3 * x + 5 * y = d';;
-integer_qelim default_parser 'forall d. exists x y. 3 * x + 5 * y = d';;
-natural_qelim default_parser 'forall d. d >= 8 ==> exists x y. 3 * x + 5 * y = d';;
-natural_qelim default_parser 'forall d. exists x y. 3 * x - 5 * y = d';;
+natural_qelim default_parser "forall d. exists x y. 3 * x + 5 * y = d";;
+integer_qelim default_parser "forall d. exists x y. 3 * x + 5 * y = d";;
+natural_qelim default_parser "forall d. d >= 8 ==> exists x y. 3 * x + 5 * y = d";;
+natural_qelim default_parser "forall d. exists x y. 3 * x - 5 * y = d";;
 
 (* ------------------------------------------------------------------------- *)
 (* Other tests, not in the main text.                                        *)
 (* ------------------------------------------------------------------------- *)
 
-integer_qelim default_parser 'exists x y. x > 0 /\ y >= 0 /\ 3 * x - 5 * y = 1';;
+integer_qelim default_parser "exists x y. x > 0 /\\ y >= 0 /\\ 3 * x - 5 * y = 1";;
 
-integer_qelim default_parser 'exists x y z. 4 * x - 6 * y = 1';;
+integer_qelim default_parser "exists x y z. 4 * x - 6 * y = 1";;
 
-integer_qelim default_parser 'forall x. a < 3 * x ==> b < 3 * x';;
+integer_qelim default_parser "forall x. a < 3 * x ==> b < 3 * x";;
 
-time integer_qelim default_parser 'forall x y. x <= y ==> 2 * x + 1 < 2 * y';;
+time integer_qelim default_parser "forall x y. x <= y ==> 2 * x + 1 < 2 * y";;
 
-time integer_qelim default_parser '(exists d. y = 65 * d) ==> (exists d. y = 5 * d)';;
-
-time integer_qelim
-  default_parser 'forall y. (exists d. y = 65 * d) ==> (exists d. y = 5 * d)';;
-
-time integer_qelim default_parser 'forall x y. ~(2 * x + 1 = 2 * y)';;
+time integer_qelim default_parser "(exists d. y = 65 * d) ==> (exists d. y = 5 * d)";;
 
 time integer_qelim
-  default_parser 'forall x y z. (2 * x + 1 = 2 * y) ==> x + y + z > 129';;
+  default_parser "forall y. (exists d. y = 65 * d) ==> (exists d. y = 5 * d)";;
 
-time integer_qelim default_parser 'forall x. a < x ==> b < x';;
+time integer_qelim default_parser "forall x y. ~(2 * x + 1 = 2 * y)";;
 
-time integer_qelim default_parser 'forall x. a <= x ==> b < x';;
+time integer_qelim
+  default_parser "forall x y z. (2 * x + 1 = 2 * y) ==> x + y + z > 129";;
+
+time integer_qelim default_parser "forall x. a < x ==> b < x";;
+
+time integer_qelim default_parser "forall x. a <= x ==> b < x";;
 
 (* ------------------------------------------------------------------------- *)
 (* Formula examples from Cooper's paper.                                     *)
 (* ------------------------------------------------------------------------- *)
 
-time integer_qelim default_parser 'forall a b. exists x. a < 20 * x /\ 20 * x < b';;
+time integer_qelim default_parser "forall a b. exists x. a < 20 * x /\\ 20 * x < b";;
 
-time integer_qelim default_parser 'exists x. a < 20 * x /\ 20 * x < b';;
+time integer_qelim default_parser "exists x. a < 20 * x /\\ 20 * x < b";;
 
-time integer_qelim default_parser 'forall b. exists x. a < 20 * x /\ 20 * x < b';;
-
-time integer_qelim
-  default_parser 'forall a. exists b. a < 4 * b + 3 * a \/ (~(a < b) /\ a > b + 1)';;
+time integer_qelim default_parser "forall b. exists x. a < 20 * x /\\ 20 * x < b";;
 
 time integer_qelim
-  default_parser 'exists y. forall x. x + 5 * y > 1 /\ 13 * x - y > 1 /\ x + 2 < 0';;
+  default_parser "forall a. exists b. a < 4 * b + 3 * a \\/ (~(a < b) /\\ a > b + 1)";;
+
+time integer_qelim
+  default_parser "exists y. forall x. x + 5 * y > 1 /\\ 13 * x - y > 1 /\\ x + 2 < 0";;
 
 (* ------------------------------------------------------------------------- *)
 (* More of my own.                                                           *)
@@ -7831,44 +7831,44 @@ time integer_qelim
 time integer_qelim <<forall x y. x >= 0 /\ y >= 0
                   ==> 12 * x - 8 * y < 0 \/ 12 * x - 8 * y > 2>>;;
 
-time integer_qelim default_parser 'exists x y. 5 * x + 3 * y = 1';;
+time integer_qelim default_parser "exists x y. 5 * x + 3 * y = 1";;
 
-time integer_qelim default_parser 'exists x y. 5 * x + 10 * y = 1';;
+time integer_qelim default_parser "exists x y. 5 * x + 10 * y = 1";;
 
-time integer_qelim default_parser 'exists x y. x >= 0 /\ y >= 0 /\ 5 * x - 6 * y = 1';;
+time integer_qelim default_parser "exists x y. x >= 0 /\\ y >= 0 /\\ 5 * x - 6 * y = 1";;
 
 
-time integer_qelim default_parser 'exists w x y z. 2 * w + 3 * x + 4 * y + 5 * z = 1';;
+time integer_qelim default_parser "exists w x y z. 2 * w + 3 * x + 4 * y + 5 * z = 1";;
 
-time integer_qelim default_parser 'exists x y. x >= 0 /\ y >= 0 /\ 5 * x - 3 * y = 1';;
+time integer_qelim default_parser "exists x y. x >= 0 /\\ y >= 0 /\\ 5 * x - 3 * y = 1";;
 
-time integer_qelim default_parser 'exists x y. x >= 0 /\ y >= 0 /\ 3 * x - 5 * y = 1';;
+time integer_qelim default_parser "exists x y. x >= 0 /\\ y >= 0 /\\ 3 * x - 5 * y = 1";;
 
-time integer_qelim default_parser 'exists x y. x >= 0 /\ y >= 0 /\ 6 * x - 3 * y = 1';;
-
-time integer_qelim
-  default_parser 'forall x y. ~(x = 0) ==> 5 * y < 6 * x \/ 5 * y > 6 * x';;
+time integer_qelim default_parser "exists x y. x >= 0 /\\ y >= 0 /\\ 6 * x - 3 * y = 1";;
 
 time integer_qelim
-  default_parser 'forall x y. ~divides(5,x) /\ ~divides(6,y) ==> ~(6 * x = 5 * y)';;
+  default_parser "forall x y. ~(x = 0) ==> 5 * y < 6 * x \\/ 5 * y > 6 * x";;
 
-time integer_qelim default_parser 'forall x y. ~divides(5,x) ==> ~(6 * x = 5 * y)';;
+time integer_qelim
+  default_parser "forall x y. ~divides(5,x) /\\ ~divides(6,y) ==> ~(6 * x = 5 * y)";;
 
-time integer_qelim default_parser 'forall x y. ~(6 * x = 5 * y)';;
+time integer_qelim default_parser "forall x y. ~divides(5,x) ==> ~(6 * x = 5 * y)";;
 
-time integer_qelim default_parser 'forall x y. 6 * x = 5 * y ==> exists d. y = 3 * d';;
+time integer_qelim default_parser "forall x y. ~(6 * x = 5 * y)";;
 
-time integer_qelim default_parser '6 * x = 5 * y ==> exists d. y = 3 * d';;
+time integer_qelim default_parser "forall x y. 6 * x = 5 * y ==> exists d. y = 3 * d";;
+
+time integer_qelim default_parser "6 * x = 5 * y ==> exists d. y = 3 * d";;
 
 (* ------------------------------------------------------------------------- *)
 (* Positive variant of the Bezout theorem (see the exercise).                *)
 (* ------------------------------------------------------------------------- *)
 
 time integer_qelim
-  default_parser 'forall z. z > 7 ==> exists x y. x >= 0 /\ y >= 0 /\ 3 * x + 5 * y = z';;
+  default_parser "forall z. z > 7 ==> exists x y. x >= 0 /\\ y >= 0 /\\ 3 * x + 5 * y = z";;
 
 time integer_qelim
-  default_parser 'forall z. z > 2 ==> exists x y. x >= 0 /\ y >= 0 /\ 3 * x + 5 * y = z';;
+  default_parser "forall z. z > 2 ==> exists x y. x >= 0 /\\ y >= 0 /\\ 3 * x + 5 * y = z";;
 
 time integer_qelim
   <<forall z.
@@ -7910,14 +7910,14 @@ time integer_qelim
 (* ------------------------------------------------------------------------- *)
 
 (integer_qelim ** generalize)
-  default_parser 'a + 2 = b /\ v_3 = b - a + 1 /\ v_2 = b - 2 /\ v_1 = 3 ==> false';;
+  default_parser "a + 2 = b /\\ v_3 = b - a + 1 /\\ v_2 = b - 2 /\\ v_1 = 3 ==> false";;
 
 (* ------------------------------------------------------------------------- *)
 (* Inspired by the Collatz conjecture.                                       *)
 (* ------------------------------------------------------------------------- *)
 
 integer_qelim
-  default_parser 'exists a b. ~(a = 1) /\ ((2 * b = a) \/ (2 * b = 3 * a + 1)) /\ (a = b)';;
+  default_parser "exists a b. ~(a = 1) /\\ ((2 * b = a) \\/ (2 * b = 3 * a + 1)) /\\ (a = b)";;
 
 integer_qelim
  <<exists a b. a > 1 /\ b > 1 /\
@@ -7954,7 +7954,7 @@ integer_qelim fm;;
 (* ------------------------------------------------------------------------- *)
 
 integer_qelim
-  default_parser 'forall x. x >= 8 ==> exists u v. u >= 0 /\ v >= 0 /\ x = 3 * u + 5 * v';;
+  default_parser "forall x. x >= 8 ==> exists u v. u >= 0 /\\ v >= 0 /\\ x = 3 * u + 5 * v";;
 
 integer_qelim
   <<exists l.
@@ -8286,10 +8286,10 @@ let complex_qelim =
 
 (*
 complex_qelim
- default_parser 'forall a x. a^2 = 2 /\ x^2 + a * x + 1 = 0 ==> x^4 + 1 = 0';;
+ default_parser "forall a x. a^2 = 2 /\\ x^2 + a * x + 1 = 0 ==> x^4 + 1 = 0";;
 
 complex_qelim
- default_parser 'forall a x. a^2 = 2 /\ x^2 + a * x + 1 = 0 ==> x^4 + c = 0';;
+ default_parser "forall a x. a^2 = 2 /\\ x^2 + a * x + 1 = 0 ==> x^4 + c = 0";;
 
 complex_qelim
  <<forall c.
@@ -8489,27 +8489,27 @@ let schur = polytest
 
 let complex_qelim_all = time complex_qelim ** generalize;;
 
-time complex_qelim default_parser 'exists x. x + 2 = 3';;
+time complex_qelim default_parser "exists x. x + 2 = 3";;
 
-time complex_qelim default_parser 'exists x. x^2 + a = 3';;
+time complex_qelim default_parser "exists x. x^2 + a = 3";;
 
-time complex_qelim default_parser 'exists x. x^2 + x + 1 = 0';;
+time complex_qelim default_parser "exists x. x^2 + x + 1 = 0";;
 
-time complex_qelim default_parser 'exists x. x^2 + x + 1 = 0 /\ x^3 + x^2 + 1 = 0';;
+time complex_qelim default_parser "exists x. x^2 + x + 1 = 0 /\\ x^3 + x^2 + 1 = 0";;
 
-time complex_qelim default_parser 'exists x. x^2 + 1 = 0 /\ x^4 + x^3 + x^2 + x = 0';;
+time complex_qelim default_parser "exists x. x^2 + 1 = 0 /\\ x^4 + x^3 + x^2 + x = 0";;
 
-time complex_qelim default_parser 'forall a x. a^2 = 2 /\ x^2 + a * x + 1 = 0 ==> x^4 + 1 = 0';;
+time complex_qelim default_parser "forall a x. a^2 = 2 /\\ x^2 + a * x + 1 = 0 ==> x^4 + 1 = 0";;
 
-time complex_qelim default_parser 'forall a x. a^2 = 2 /\ x^2 + a * x + 1 = 0 ==> x^4 + 2 = 0';;
+time complex_qelim default_parser "forall a x. a^2 = 2 /\\ x^2 + a * x + 1 = 0 ==> x^4 + 2 = 0";;
 
-time complex_qelim default_parser 'exists a x. a^2 = 2 /\ x^2 + a * x + 1 = 0 /\ ~(x^4 + 2 = 0)';;
+time complex_qelim default_parser "exists a x. a^2 = 2 /\\ x^2 + a * x + 1 = 0 /\\ ~(x^4 + 2 = 0)";;
 
-time complex_qelim default_parser 'exists x. a^2 = 2 /\ x^2 + a * x + 1 = 0 /\ ~(x^4 + 2 = 0)';;
+time complex_qelim default_parser "exists x. a^2 = 2 /\\ x^2 + a * x + 1 = 0 /\\ ~(x^4 + 2 = 0)";;
 
-time complex_qelim default_parser 'forall x. x^2 + a * x + 1 = 0 ==> x^4 + 2 = 0';;
+time complex_qelim default_parser "forall x. x^2 + a * x + 1 = 0 ==> x^4 + 2 = 0";;
 
-time complex_qelim default_parser 'forall a. a^2 = 2 /\ x^2 + a * x + 1 = 0 ==> x^4 + 2 = 0';;
+time complex_qelim default_parser "forall a. a^2 = 2 /\\ x^2 + a * x + 1 = 0 ==> x^4 + 2 = 0";;
 
 time complex_qelim <<exists a b c x y.
         a * x^2 + b * x + c = 0 /\
@@ -8574,14 +8574,14 @@ time complex_qelim
              (x^2 + a * x + 1 = 0) /\
              (y * (x^4 + 1) + 1 = 0))>>;;
 
-time complex_qelim default_parser 'forall x. exists y. x^2 = y^3';;
+time complex_qelim default_parser "forall x. exists y. x^2 = y^3";;
 
 time complex_qelim
  <<forall x y z a b. (a + b) * (x - y + z) - (a - b) * (x + y + z) =
                2 * (b * x + b * z - a * y)>>;;
 
 time complex_qelim
- default_parser 'forall a b. ~(a = b) ==> exists x y. (y * x^2 = a) /\ (y * x^2 + x = b)';;
+ default_parser "forall a b. ~(a = b) ==> exists x y. (y * x^2 = a) /\\ (y * x^2 + x = b)";;
 
 time complex_qelim
  <<forall a b c x y. (a * x^2 + b * x + c = 0) /\
@@ -8857,7 +8857,7 @@ time complex_qelim
 (* ------------------------------------------------------------------------- *)
 
 time complex_qelim
-  default_parser 'forall x y. x^2 + y^2 = 1 ==> (2 * y^2 - 1)^2 + (2 * x * y)^2 = 1';;
+  default_parser "forall x y. x^2 + y^2 = 1 ==> (2 * y^2 - 1)^2 + (2 * x * y)^2 = 1";;
 
 (* ------------------------------------------------------------------------- *)
 (* The examples from my thesis.                                              *)
@@ -8887,9 +8887,9 @@ time complex_qelim <<forall u v.
 (* Deliberately silly examples from Poizat's model theory book (6.6).        *)
 (* ------------------------------------------------------------------------- *)
 
-time complex_qelim default_parser 'exists z. x * z^87 + y * z^44 + 1 = 0';;
+time complex_qelim default_parser "exists z. x * z^87 + y * z^44 + 1 = 0";;
 
-time complex_qelim default_parser 'forall u. exists v. x * (u + v^2)^2 + y * (u + v^2) + z = 0';;
+time complex_qelim default_parser "forall u. exists v. x * (u + v^2)^2 + y * (u + v^2) + z = 0";;
 
 (* ------------------------------------------------------------------------- *)
 (* Actually prove simple equivalences.                                       *)
@@ -9176,21 +9176,21 @@ let real_qelim =
 (* ------------------------------------------------------------------------- *)
 
 (*
-real_qelim default_parser 'exists x. x^4 + x^2 + 1 = 0';;
+real_qelim default_parser "exists x. x^4 + x^2 + 1 = 0";;
 
-real_qelim default_parser 'exists x. x^3 - x^2 + x - 1 = 0';;
+real_qelim default_parser "exists x. x^3 - x^2 + x - 1 = 0";;
 
 real_qelim <<exists x y. x^3 - x^2 + x - 1 = 0 /\
                          y^3 - y^2 + y - 1 = 0 /\ ~(x = y)>>;;
 
 #trace testform;;
-real_qelim default_parser 'exists x. x^2 - 3 * x + 2 = 0 /\ 2 * x - 3 = 0';;
+real_qelim default_parser "exists x. x^2 - 3 * x + 2 = 0 /\\ 2 * x - 3 = 0";;
 #untrace testform;;
 
 real_qelim
- default_parser 'forall a f k. (forall e. k < e ==> f < a * e) ==> f <= a * k';;
+ default_parser "forall a f k. (forall e. k < e ==> f < a * e) ==> f <= a * k";;
 
-real_qelim default_parser 'exists x. a * x^2 + b * x + c = 0';;
+real_qelim default_parser "exists x. a * x^2 + b * x + c = 0";;
 
 real_qelim <<forall a b c. (exists x. a * x^2 + b * x + c = 0) <=>
                            b^2 >= 4 * a * c>>;;
@@ -9221,7 +9221,7 @@ let grpform (Atom(R("=",[s;t]))) =
 
 (*
 let eqs = complete_and_simplify ["1"; "*"; "i"]
-  [default_parser '1 * x = x'; default_parser 'i(x) * x = 1'; default_parser '(x * y) * z = x * y * z'];;
+  [default_parser "1 * x = x"; default_parser "i(x) * x = 1"; default_parser "(x * y) * z = x * y * z"];;
 
 let fm = list_conj (map grpform eqs);;
 
@@ -9480,10 +9480,10 @@ let grobner_decide fm =
 
 (*
 grobner_decide
-  default_parser 'a^2 = 2 /\ x^2 + a*x + 1 = 0 ==> x^4 + 1 = 0';;
+  default_parser "a^2 = 2 /\\ x^2 + a*x + 1 = 0 ==> x^4 + 1 = 0";;
 
 grobner_decide
-  default_parser 'a^2 = 2 /\ x^2 + a*x + 1 = 0 ==> x^4 + 2 = 0';;
+  default_parser "a^2 = 2 /\\ x^2 + a*x + 1 = 0 ==> x^4 + 2 = 0";;
 
 grobner_decide
   <<(a * x^2 + b * x + c = 0) /\
@@ -9506,9 +9506,9 @@ time complex_qelim (generalize fm),time grobner_decide fm;;
 (* More tests.                                                               *)
 (* ------------------------------------------------------------------------- *)
 
-time grobner_decide  default_parser 'a^2 = 2 /\ x^2 + a*x + 1 = 0 ==> x^4 + 1 = 0';;
+time grobner_decide  default_parser "a^2 = 2 /\\ x^2 + a*x + 1 = 0 ==> x^4 + 1 = 0";;
 
-time grobner_decide  default_parser 'a^2 = 2 /\ x^2 + a*x + 1 = 0 ==> x^4 + 2 = 0';;
+time grobner_decide  default_parser "a^2 = 2 /\\ x^2 + a*x + 1 = 0 ==> x^4 + 2 = 0";;
 
 time grobner_decide <<(a * x^2 + b * x + c = 0) /\
       (a * y^2 + b * y + c = 0) /\
@@ -9611,7 +9611,7 @@ time grobner_decide
 (* ------------------------------------------------------------------------- *)
 
 time grobner_decide
- default_parser 'y * (c * x + d) = a * x + b ==> x * (c * y - a) = b - d * y';;
+ default_parser "y * (c * x + d) = a * x + b ==> x * (c * y - a) = b - d * y";;
 
 (* ------------------------------------------------------------------------- *)
 (* Manual "sums of squares" for 0 <= a /\ a <= b ==> a^3 <= b^3.             *)
@@ -9674,7 +9674,7 @@ time grobner_decide
 (* ------------------------------------------------------------------------- *)
 
 time grobner_decide
- default_parser '(y - x) * s^2 = 1 /\ (x - y) * t^2 = 1 ==> s^2 + t^2 = 0';;
+ default_parser "(y - x) * s^2 = 1 /\\ (x - y) * t^2 = 1 ==> s^2 + t^2 = 0";;
 
 (* ------------------------------------------------------------------------- *)
 (* Inspired by Cardano's formula for a cubic. This actually works worse than *)
@@ -9730,20 +9730,20 @@ let grobner_basis vars pols =
 
 let coordinations =
   ["collinear", (** Points 1, 2 and 3 lie on a common line **)
-   default_parser '(1_x - 2_x) * (2_y - 3_y) = (1_y - 2_y) * (2_x - 3_x)';
+   default_parser "(1_x - 2_x) * (2_y - 3_y) = (1_y - 2_y) * (2_x - 3_x)";
    "parallel", (** Lines (1,2) and (3,4) are parallel **)
-    default_parser '(1_x - 2_x) * (3_y - 4_y) = (1_y - 2_y) * (3_x - 4_x)';
+    default_parser "(1_x - 2_x) * (3_y - 4_y) = (1_y - 2_y) * (3_x - 4_x)";
    "perpendicular", (** Lines (1,2) and (3,4) are perpendicular **)
-   default_parser '(1_x - 2_x) * (3_x - 4_x) + (1_y - 2_y) * (3_y - 4_y) = 0';
+   default_parser "(1_x - 2_x) * (3_x - 4_x) + (1_y - 2_y) * (3_y - 4_y) = 0";
    "lengths_eq", (** Lines (1,2) and (3,4) have the same length **)
-   default_parser '(1_x - 2_x)^2 + (1_y - 2_y)^2 = (3_x - 4_x)^2 + (3_y - 4_y)^2';
+   default_parser "(1_x - 2_x)^2 + (1_y - 2_y)^2 = (3_x - 4_x)^2 + (3_y - 4_y)^2";
    "is_midpoint", (** Point 1 is the midpoint of line (2,3) **)
-   default_parser '2 * 1_x = 2_x + 3_x /\ 2 * 1_y = 2_y + 3_y';
+   default_parser "2 * 1_x = 2_x + 3_x /\\ 2 * 1_y = 2_y + 3_y";
    "is_intersection", (** Lines (2,3) and (4,5) meet at point 1 **)
    <<(1_x - 2_x) * (2_y - 3_y) = (1_y - 2_y) * (2_x - 3_x) /\
      (1_x - 4_x) * (4_y - 5_y) = (1_y - 4_y) * (4_x - 5_x)>>;
    "=", (** Points 1 and 2 are the same **)
-   default_parser '(1_x = 2_x) /\ (1_y = 2_y)'];;
+   default_parser "(1_x = 2_x) /\\ (1_y = 2_y)"];;
 
 (* ------------------------------------------------------------------------- *)
 (* Convert formula into coordinate form.                                     *)
@@ -9762,7 +9762,7 @@ let coordinate = onatoms
 (* ------------------------------------------------------------------------- *)
 
 (*
-coordinate default_parser 'collinear(a,b,c) ==> collinear(b,a,c)';;
+coordinate default_parser "collinear(a,b,c) ==> collinear(b,a,c)";;
 *)
 
 (* ------------------------------------------------------------------------- *)
@@ -9776,15 +9776,15 @@ let invariant (x',y') ((s:string),z) =
     (x |-> tsubst i x') ((y |-> tsubst i y') f) in
   Iff(z,subst(itlist m (1--5) undefined) z);;
 
-let invariant_under_translation = invariant (secondary_parser 'x + X|',secondary_parser 'y + Y|');;
+let invariant_under_translation = invariant (secondary_parser "x + X|",secondary_parser "y + Y|");;
 
 (*
 forall (grobner_decide ** invariant_under_translation) coordinations;;
 *)
 
 let invariant_under_rotation fm =
-  Imp(default_parser 's^2 + c^2 = 1',
-      invariant (secondary_parser 'c * x - s * y|',secondary_parser 's * x + c * y|') fm);;
+  Imp(default_parser "s^2 + c^2 = 1",
+      invariant (secondary_parser "c * x - s * y|",secondary_parser "s * x + c * y|") fm);;
 
 (*
 forall (grobner_decide ** invariant_under_rotation) coordinations;;
@@ -9796,7 +9796,7 @@ forall (grobner_decide ** invariant_under_rotation) coordinations;;
 
 (*
 real_qelim
- default_parser 'forall x y. exists s c. s^2 + c^2 = 1 /\ s * x + c * y = 0';;
+ default_parser "forall x y. exists s c. s^2 + c^2 = 1 /\\ s * x + c * y = 0";;
 *)
 
 (* ------------------------------------------------------------------------- *)
@@ -9813,9 +9813,9 @@ let originate fm =
 (* ------------------------------------------------------------------------- *)
 
 let invariant_under_scaling fm =
-  Imp(default_parser '~(A = 0)',invariant(secondary_parser 'A * x|',secondary_parser 'A * y|') fm);;
+  Imp(default_parser "~(A = 0)",invariant(secondary_parser "A * x|",secondary_parser "A * y|") fm);;
 
-let invariant_under_shearing = invariant(secondary_parser 'x + b * y|',secondary_parser 'y|');;
+let invariant_under_shearing = invariant(secondary_parser "x + b * y|",secondary_parser "y|");;
 
 (*
 forall (grobner_decide ** invariant_under_scaling) coordinations;;
@@ -10016,9 +10016,9 @@ let urinterpolate p q =
 
 (*
 let p = prenex
- default_parser '(forall x. R(x,f(x))) /\ (forall x y. S(x,y) <=> R(x,y) \/ R(y,x))'
+ default_parser "(forall x. R(x,f(x))) /\\ (forall x y. S(x,y) <=> R(x,y) \\/ R(y,x))"
 and q = prenex
- default_parser '(forall x y z. S(x,y) /\ S(y,z) ==> T(x,z)) /\ ~T(0,0)';;
+ default_parser "(forall x y z. S(x,y) /\\ S(y,z) ==> T(x,z)) /\\ ~T(0,0)";;
 
 let c = urinterpolate p q;;
 
@@ -10128,8 +10128,8 @@ let einterpolate p q =
 (* ------------------------------------------------------------------------- *)
 
 (*
-let p = default_parser '(p ==> q /\ r)'
-and q = default_parser '~((q ==> p) ==> s ==> (p <=> q))';;
+let p = default_parser "(p ==> q /\\ r)"
+and q = default_parser "~((q ==> p) ==> s ==> (p <=> q))";;
 
 let c = interpolate p q;;
 
@@ -10144,7 +10144,7 @@ tautology(Imp(q,Not c));;
 
 let p = <<(forall x. exists y. R(x,y)) /\
           (forall x y. S(x,y) <=> R(x,y) \/ R(y,x))>>
-and q = default_parser '(forall x y z. S(x,y) /\ S(y,z) ==> T(x,z)) /\ ~T(u,u)';;
+and q = default_parser "(forall x y z. S(x,y) /\\ S(y,z) ==> T(x,z)) /\\ ~T(u,u)";;
 
 meson(Imp(And(p,q),False));;
 
@@ -10160,7 +10160,7 @@ meson(Imp(q,Not c));;
 let p = <<(forall x. exists y. R(x,y)) /\
           (forall x y. S(x,y) <=> R(x,y) \/ R(y,x)) /\
           (forall v. R(u,v) ==> Q(v,u))>>
-and q = default_parser '(forall x y z. S(x,y) /\ S(y,z) ==> T(x,z)) /\ ~T(u,u)';;
+and q = default_parser "(forall x y z. S(x,y) /\\ S(y,z) ==> T(x,z)) /\\ ~T(u,u)";;
 
 meson(Imp(And(p,q),False));;
 
@@ -10178,7 +10178,7 @@ let test_interp fm =
   let c = interpolate p q in
   meson(Imp(And(p,q),False)); meson(Imp(p,c)); meson(Imp(q,Not c)); c;;
 
-test_interp default_parser 'forall x. P(x) ==> exists y. forall z. P(z) ==> Q(y)';;
+test_interp default_parser "forall x. P(x) ==> exists y. forall z. P(z) ==> Q(y)";;
 
 test_interp <<forall y. exists y. forall z. exists a.
                 P(a,x,y,z) ==> P(x,y,z,a)>>;;
@@ -10187,8 +10187,8 @@ test_interp <<forall y. exists y. forall z. exists a.
 (* Hintikka's examples.                                                      *)
 (* ------------------------------------------------------------------------- *)
 
-let p = default_parser 'forall x. L(x,b)'
-and q = default_parser '(forall y. L(b,y) ==> m = y) /\ ~(m = b)';;
+let p = default_parser "forall x. L(x,b)"
+and q = default_parser "(forall y. L(b,y) ==> m = y) /\\ ~(m = b)";;
 
 let c = einterpolate p q;;
 
@@ -10196,9 +10196,9 @@ meson(Imp(p,c));;
 meson(Imp(q,Not c));;
 
 let p =
- default_parser '(forall x. A(x) /\ C(x) ==> B(x)) /\ (forall x. D(x) \/ ~D(x) ==> C(x))'
+ default_parser "(forall x. A(x) /\\ C(x) ==> B(x)) /\\ (forall x. D(x) \\/ ~D(x) ==> C(x))"
 and q =
- default_parser '~(forall x. E(x) ==> A(x) ==> B(x))';;
+ default_parser "~(forall x. E(x) ==> A(x) ==> B(x))";;
 
 let c = interpolate p q;;
 meson(Imp(p,c));;
@@ -10332,7 +10332,7 @@ let rec langpartition langs fms =
     ==> u = v_3 /\ ~(v_1 = v_2)>>;;
 
 ccvalid
-  default_parser '(v_2 = f(v_3) /\ v_1 = f(u)) ==> ~(u = v_3 /\ ~(v_1 = v_2))';;
+  default_parser "(v_2 = f(v_3) /\\ v_1 = f(u)) ==> ~(u = v_3 /\\ ~(v_1 = v_2))";;
 *)
 
 (* ------------------------------------------------------------------------- *)
@@ -10398,7 +10398,7 @@ let nelop langs fm = forall (nelop1 langs) (simpdnf(simplify(Not fm)));;
 
 (*
 nelop (add_default [int_lang])
- default_parser 'f(v - 1) - 1 = v + 1 /\ f(u) + 1 = u - 1 /\ u + 1 = v ==> false';;
+ default_parser "f(v - 1) - 1 = v + 1 /\\ f(u) + 1 = u - 1 /\\ u + 1 = v ==> false";;
 
 (* ------------------------------------------------------------------------- *)
 (* Bell numbers show the size of our case analysis.                          *)
@@ -10453,10 +10453,10 @@ let nelop langs fm = forall (nelop1 langs) (simpdnf(simplify(Not fm)));;
 
 (*
 nelop (add_default [int_lang])
- default_parser 'y <= x /\ y >= x + z /\ z >= 0 ==> f(f(x) - f(y)) = f(z)';;
+ default_parser "y <= x /\\ y >= x + z /\\ z >= 0 ==> f(f(x) - f(y)) = f(z)";;
 
 nelop (add_default [int_lang])
- default_parser 'x = y /\ y >= z /\ z >= x ==> f(z) = f(x)';;
+ default_parser "x = y /\\ y >= z /\\ z >= x ==> f(z) = f(x)";;
 
 nelop (add_default [int_lang])
  <<a <= b /\ b <= f(a) /\ f(a) <= 1
@@ -10467,26 +10467,26 @@ nelop (add_default [int_lang])
 (* ------------------------------------------------------------------------- *)
 
 map (real_qelim ** generalize)
-  [default_parser 'x * y = 0 /\ z = 0 ==> x = z \/ y = z';
-   default_parser 'x * y = 0 /\ z = 0 ==> x = z';
-   default_parser 'x * y = 0 /\ z = 0 ==> y = z'];;
+  [default_parser "x * y = 0 /\\ z = 0 ==> x = z \\/ y = z";
+   default_parser "x * y = 0 /\\ z = 0 ==> x = z";
+   default_parser "x * y = 0 /\\ z = 0 ==> y = z"];;
 
 map (integer_qelim ** generalize)
-  [default_parser '0 <= x /\ x < 2 /\ y = 0 /\ z = 1 ==> x = y \/ x = z';
-   default_parser '0 <= x /\ x < 2 /\ y = 0 /\ z = 1 ==> x = y';
-   default_parser '0 <= x /\ x < 2 /\ y = 0 /\ z = 1 ==> x = z'];;
+  [default_parser "0 <= x /\\ x < 2 /\\ y = 0 /\\ z = 1 ==> x = y \\/ x = z";
+   default_parser "0 <= x /\\ x < 2 /\\ y = 0 /\\ z = 1 ==> x = y";
+   default_parser "0 <= x /\\ x < 2 /\\ y = 0 /\\ z = 1 ==> x = z"];;
 
 (* ------------------------------------------------------------------------- *)
 (* Failures of original Shostak procedure.                                   *)
 (* ------------------------------------------------------------------------- *)
 
 nelop (add_default [int_lang])
- default_parser 'f(v - 1) - 1 = v + 1 /\ f(u) + 1 = u - 1 /\ u + 1 = v ==> false';;
+ default_parser "f(v - 1) - 1 = v + 1 /\\ f(u) + 1 = u - 1 /\\ u + 1 = v ==> false";;
 
 (*** And this one is where the original procedure loops ***)
 
 nelop (add_default [int_lang])
- default_parser 'f(v) = v /\ f(u) = u - 1 /\ u = v ==> false';;
+ default_parser "f(v) = v /\\ f(u) = u - 1 /\\ u = v ==> false";;
 
 (* ------------------------------------------------------------------------- *)
 (* Additional examples not in the text.                                      *)
@@ -10495,17 +10495,17 @@ nelop (add_default [int_lang])
 (*** This is on p. 8 of Shostak's "Deciding combinations" paper ***)
 
 time (nelop (add_default [int_lang]))
- default_parser 'z = f(x - y) /\ x = z + y /\ ~(-(y) = -(x - f(f(z)))) ==> false';;
+ default_parser "z = f(x - y) /\\ x = z + y /\\ ~(-(y) = -(x - f(f(z)))) ==> false";;
 
 (*** This (ICS theories-1) fails without array operations ***)
 
 time (nelop (add_default [int_lang]))
- default_parser 'a + 2 = b ==> f(read(update(A,a,3),b-2)) = f(b - a + 1)';;
+ default_parser "a + 2 = b ==> f(read(update(A,a,3),b-2)) = f(b - a + 1)";;
 
 (*** can-001 from ICS examples site, with if-then-elses expanded manually ***)
 
 time (nelop (add_default [int_lang]))
- default_parser '(x = y /\ z = 1 ==> f(f((x+z))) = f(f((1+y))))';;
+ default_parser "(x = y /\\ z = 1 ==> f(f((x+z))) = f(f((1+y))))";;
 
 (*** RJB example; lists plus uninterpreted functions ***)
 
@@ -10516,12 +10516,12 @@ time (nelop (add_default [int_lang]))
 (*** Another one from the ICS paper ***)
 
 time (nelop (add_default [int_lang]))
- default_parser '~(f(f(x) - f(y)) = f(z)) /\ y <= x /\ y >= x + z /\ z >= 0 ==> false';;
+ default_parser "~(f(f(x) - f(y)) = f(z)) /\\ y <= x /\\ y >= x + z /\\ z >= 0 ==> false";;
 
 (*** Shostak's "A Practical Decision Procedure..." paper
  *** No longer works since I didn't do predicates in congruence closure
 time (nelop (add_default [int_lang]))
- default_parser 'x < f(y) + 1 /\ f(y) <= x ==> (P(x,y) <=> P(f(y),y))';;
+ default_parser "x < f(y) + 1 /\\ f(y) <= x ==> (P(x,y) <=> P(f(y),y))";;
  ***)
 
 (*** Shostak's "Practical..." paper again, using extra clauses for MAX ***)
@@ -10533,17 +10533,17 @@ time (nelop (add_default [int_lang]))
 (*** Shostak's "Practical..." paper again ***)
 
 time (nelop (add_default [int_lang]))
- default_parser 'x <= g(x) /\ x >= g(x) ==> x = g(g(g(g(x))))';;
+ default_parser "x <= g(x) /\\ x >= g(x) ==> x = g(g(g(g(x))))";;
 
 (*** Easy example I invented ***)
 
 time (nelop (add_default [real_lang]))
- default_parser 'x^2 =  1 ==> (f(x) = f(-(x)))  ==> (f(x) = f(1))';;
+ default_parser "x^2 =  1 ==> (f(x) = f(-(x)))  ==> (f(x) = f(1))";;
 
 (*** Taken from Clark Barrett's CVC page ***)
 
 time (nelop (add_default [int_lang]))
- default_parser '2 * f(x + y) = 3 * y /\ 2 * x = y ==> f(f(x + y)) = 3 * x';;
+ default_parser "2 * f(x + y) = 3 * y /\\ 2 * x = y ==> f(f(x + y)) = 3 * x";;
 
 (*** My former running example in the text; seems too slow.
  *** Anyway this also needs extra predicates in CC
@@ -11122,11 +11122,11 @@ let lcftaut p =
 (* ------------------------------------------------------------------------- *)
 
 (*
-lcftaut default_parser '(p ==> q) \/ (q ==> p)';;
+lcftaut default_parser "(p ==> q) \\/ (q ==> p)";;
 
-lcftaut default_parser 'p /\ q <=> ((p <=> q) <=> p \/ q)';;
+lcftaut default_parser "p /\\ q <=> ((p <=> q) <=> p \\/ q)";;
 
-lcftaut default_parser '((p <=> q) <=> r) <=> (p <=> (q <=> r))';;
+lcftaut default_parser "((p <=> q) <=> r) <=> (p <=> (q <=> r))";;
 *)
 (* ========================================================================= *)
 (* First-order derived rules in the LCF setup.                               *)
@@ -11174,8 +11174,8 @@ let rec icongruence s t stm ttm =
 (* ------------------------------------------------------------------------- *)
 
 (*
-icongruence secondary_parser 's|' secondary_parser 't|' secondary_parser 'f(s,g(s,t,s),u,h(h(s)))|'
-                            secondary_parser 'f(s,g(t,t,s),u,h(h(t)))|';;
+icongruence secondary_parser "s|" secondary_parser "t|" secondary_parser "f(s,g(s,t,s),u,h(h(s)))|"
+                            secondary_parser "f(s,g(t,t,s),u,h(h(t)))|";;
 *)
 
 (* ------------------------------------------------------------------------- *)
@@ -11289,7 +11289,7 @@ let rec isubst s t sfm tfm =
 
 (* ------------------------------------------------------------------------- *)
 (*                                                                           *)
-(* -------------------------------------------- alpha "z" default_parser 'forall x. p[x]' *)
+(* -------------------------------------------- alpha "z" default_parser "forall x. p[x]" *)
 (*   |- (forall x. p[x]) ==> (forall z. p'[z])                               *)
 (*                                                                           *)
 (* [Restriction that z is not free in the initial p[x].]                     *)
@@ -11303,7 +11303,7 @@ let alpha z fm =
 
 (* ------------------------------------------------------------------------- *)
 (*                                                                           *)
-(* -------------------------------- ispec t default_parser 'forall x. p[x]'               *)
+(* -------------------------------- ispec t default_parser "forall x. p[x]"               *)
 (*   |- (forall x. p[x]) ==> p'[t]                                           *)
 (* ------------------------------------------------------------------------- *)
 
@@ -11327,53 +11327,53 @@ let spec t th = modusponens (ispec t (concl th)) th;;
 (* ------------------------------------------------------------------------- *)
 
 (*
-ispec secondary_parser 'y|' default_parser 'forall x y z. x + y + z = z + y + x';;
+ispec secondary_parser "y|" default_parser "forall x y z. x + y + z = z + y + x";;
 
 (* ------------------------------------------------------------------------- *)
 (* Additional tests not in main text.                                        *)
 (* ------------------------------------------------------------------------- *)
 
-isubst secondary_parser 'x + x|' secondary_parser '2 * x|'
-        default_parser 'x + x = x ==> x = 0' default_parser '2 * x = x ==> x = 0';;
+isubst secondary_parser "x + x|" secondary_parser "2 * x|"
+        default_parser "x + x = x ==> x = 0" default_parser "2 * x = x ==> x = 0";;
 
-isubst secondary_parser 'x + x|'  secondary_parser '2 * x|'
-       default_parser '(x + x = y + y) ==> (y + y + y = x + x + x)'
-       default_parser '2 * x = y + y ==> y + y + y = x + 2 * x';;
+isubst secondary_parser "x + x|"  secondary_parser "2 * x|"
+       default_parser "(x + x = y + y) ==> (y + y + y = x + x + x)"
+       default_parser "2 * x = y + y ==> y + y + y = x + 2 * x";;
 
-ispec secondary_parser 'x|' default_parser 'forall x y z. x + y + z = y + z + z' ;;
+ispec secondary_parser "x|" default_parser "forall x y z. x + y + z = y + z + z" ;;
 
-ispec secondary_parser 'x|' default_parser 'forall x. x = x' ;;
+ispec secondary_parser "x|" default_parser "forall x. x = x" ;;
 
-ispec secondary_parser 'w + y + z|' default_parser 'forall x y z. x + y + z = y + z + z' ;;
+ispec secondary_parser "w + y + z|" default_parser "forall x y z. x + y + z = y + z + z" ;;
 
-ispec secondary_parser 'x + y + z|' default_parser 'forall x y z. x + y + z = y + z + z' ;;
+ispec secondary_parser "x + y + z|" default_parser "forall x y z. x + y + z = y + z + z" ;;
 
-ispec secondary_parser 'x + y + z|' default_parser 'forall x y z. nothing_much' ;;
+ispec secondary_parser "x + y + z|" default_parser "forall x y z. nothing_much" ;;
 
-isubst secondary_parser 'x + x|' secondary_parser '2 * x|'
-       default_parser '(x + x = y + y) <=> (something \/ y + y + y = x + x + x)' ;;
+isubst secondary_parser "x + x|" secondary_parser "2 * x|"
+       default_parser "(x + x = y + y) <=> (something \\/ y + y + y = x + x + x)" ;;
 
-isubst secondary_parser 'x + x|'  secondary_parser '2 * x|'
-       default_parser '(exists x. x = 2) <=> exists y. y + x + x = y + y + y'
-       default_parser '(exists x. x = 2) <=> (exists y. y + 2 * x = y + y + y)';;
+isubst secondary_parser "x + x|"  secondary_parser "2 * x|"
+       default_parser "(exists x. x = 2) <=> exists y. y + x + x = y + y + y"
+       default_parser "(exists x. x = 2) <=> (exists y. y + 2 * x = y + y + y)";;
 
-isubst secondary_parser 'x|'  secondary_parser 'y|'
-        default_parser '(forall z. x = z) <=> (exists x. y < z) /\ (forall y. y < x)'
-        default_parser '(forall z. y = z) <=> (exists x. y < z) /\ (forall y'. y' < y)';;
+isubst secondary_parser "x|"  secondary_parser "y|"
+        default_parser "(forall z. x = z) <=> (exists x. y < z) /\\ (forall y. y < x)"
+        default_parser "(forall z. y = z) <=> (exists x. y < z) /\\ (forall y'. y' < y)";;
 
 (* ------------------------------------------------------------------------- *)
 (* The bug is now fixed.                                                     *)
 (* ------------------------------------------------------------------------- *)
 
-ispec secondary_parser 'x'|' default_parser 'forall x x' x''. x + x' + x'' = 0';;
+ispec secondary_parser "x'|" default_parser "forall x x' x''. x + x' + x'' = 0";;
 
-ispec secondary_parser 'x''|' default_parser 'forall x x' x''. x + x' + x'' = 0';;
+ispec secondary_parser "x''|" default_parser "forall x x' x''. x + x' + x'' = 0";;
 
-ispec secondary_parser 'x' + x''|' default_parser 'forall x x' x''. x + x' + x'' = 0';;
+ispec secondary_parser "x' + x''|" default_parser "forall x x' x''. x + x' + x'' = 0";;
 
-ispec secondary_parser 'x + x' + x''|' default_parser 'forall x x' x''. x + x' + x'' = 0';;
+ispec secondary_parser "x + x' + x''|" default_parser "forall x x' x''. x + x' + x'' = 0";;
 
-ispec secondary_parser '2 * x|' default_parser 'forall x x'. x + x' = x' + x';;
+ispec secondary_parser "2 * x|" default_parser "forall x x'. x + x' = x' + x";;
 
 *)
 (* ========================================================================= *)
@@ -11394,7 +11394,7 @@ let unify_complementsf env =
 
 (* ------------------------------------------------------------------------- *)
 (*    |- (q ==> f) ==> ... ==> (q ==> p) ==> r                               *)
-(* --------------------------------------------- use_laterimp default_parser 'q ==> p'    *)
+(* --------------------------------------------- use_laterimp default_parser "q ==> p"    *)
 (*    |- (p ==> f) ==> ... ==> (q ==> p) ==> r                               *)
 (* ------------------------------------------------------------------------- *)
 
@@ -11550,9 +11550,9 @@ let simpcont thp (env,sks,k) =
   let ifn = tsubst(solve env) in
   thp(ifn,onformula ifn (itlist mk_skol sks False));;
 
-lcfrefute default_parser 'p(1) /\ ~q(1) /\ (forall x. p(x) ==> q(x))' 1 simpcont;;
+lcfrefute default_parser "p(1) /\\ ~q(1) /\\ (forall x. p(x) ==> q(x))" 1 simpcont;;
 
-lcfrefute default_parser '(exists x. ~p(x)) /\ (forall x. p(x))' 1 simpcont;;
+lcfrefute default_parser "(exists x. ~p(x)) /\\ (forall x. p(x))" 1 simpcont;;
 
 (* ------------------------------------------------------------------------- *)
 (*         |- (p(v) ==> forall x. p(x)) ==> q                                *)
@@ -11623,112 +11623,112 @@ let ewd1062_1 = lcffol
 let start_time = Sys.time();;
 
 let p1 = time lcftaut
- default_parser 'p ==> q <=> ~q ==> ~p';;
+ default_parser "p ==> q <=> ~q ==> ~p";;
 
 let p2 = time lcftaut
- default_parser '~ ~p <=> p';;
+ default_parser "~ ~p <=> p";;
 
 let p3 = time lcftaut
- default_parser '~(p ==> q) ==> q ==> p';;
+ default_parser "~(p ==> q) ==> q ==> p";;
 
 let p4 = time lcftaut
- default_parser '~p ==> q <=> ~q ==> p';;
+ default_parser "~p ==> q <=> ~q ==> p";;
 
 let p5 = time lcftaut
- default_parser '(p \/ q ==> p \/ r) ==> p \/ (q ==> r)';;
+ default_parser "(p \\/ q ==> p \\/ r) ==> p \\/ (q ==> r)";;
 
 let p6 = time lcftaut
- default_parser 'p \/ ~p';;
+ default_parser "p \\/ ~p";;
 
 let p7 = time lcftaut
- default_parser 'p \/ ~ ~ ~p';;
+ default_parser "p \\/ ~ ~ ~p";;
 
 let p8 = time lcftaut
- default_parser '((p ==> q) ==> p) ==> p';;
+ default_parser "((p ==> q) ==> p) ==> p";;
 
 let p9 = time lcftaut
- default_parser '(p \/ q) /\ (~p \/ q) /\ (p \/ ~q) ==> ~(~q \/ ~q)';;
+ default_parser "(p \\/ q) /\\ (~p \\/ q) /\\ (p \\/ ~q) ==> ~(~q \\/ ~q)";;
 
 let p10 = time lcftaut
- default_parser '(q ==> r) /\ (r ==> p /\ q) /\ (p ==> q /\ r) ==> (p <=> q)';;
+ default_parser "(q ==> r) /\\ (r ==> p /\\ q) /\\ (p ==> q /\\ r) ==> (p <=> q)";;
 
 let p11 = time lcftaut
- default_parser 'p <=> p';;
+ default_parser "p <=> p";;
 
 let p12 = time lcftaut
- default_parser '((p <=> q) <=> r) <=> (p <=> (q <=> r))';;
+ default_parser "((p <=> q) <=> r) <=> (p <=> (q <=> r))";;
 
 let p13 = time lcftaut
- default_parser 'p \/ q /\ r <=> (p \/ q) /\ (p \/ r)';;
+ default_parser "p \\/ q /\\ r <=> (p \\/ q) /\\ (p \\/ r)";;
 
 let p14 = time lcftaut
- default_parser '(p <=> q) <=> (q \/ ~p) /\ (~q \/ p)';;
+ default_parser "(p <=> q) <=> (q \\/ ~p) /\\ (~q \\/ p)";;
 
 let p15 = time lcftaut
- default_parser 'p ==> q <=> ~p \/ q';;
+ default_parser "p ==> q <=> ~p \\/ q";;
 
 let p16 = time lcftaut
- default_parser '(p ==> q) \/ (q ==> p)';;
+ default_parser "(p ==> q) \\/ (q ==> p)";;
 
 let p17 = time lcftaut
- default_parser 'p /\ (q ==> r) ==> s <=> (~p \/ q \/ s) /\ (~p \/ ~r \/ s)';;
+ default_parser "p /\\ (q ==> r) ==> s <=> (~p \\/ q \\/ s) /\\ (~p \\/ ~r \\/ s)";;
 
 let p1 = time lcffol
- default_parser 'p ==> q <=> ~q ==> ~p';;
+ default_parser "p ==> q <=> ~q ==> ~p";;
 
 let p2 = time lcffol
- default_parser '~ ~p <=> p';;
+ default_parser "~ ~p <=> p";;
 
 let p3 = time lcffol
- default_parser '~(p ==> q) ==> q ==> p';;
+ default_parser "~(p ==> q) ==> q ==> p";;
 
 let p4 = time lcffol
- default_parser '~p ==> q <=> ~q ==> p';;
+ default_parser "~p ==> q <=> ~q ==> p";;
 
 let p5 = time lcffol
- default_parser '(p \/ q ==> p \/ r) ==> p \/ (q ==> r)';;
+ default_parser "(p \\/ q ==> p \\/ r) ==> p \\/ (q ==> r)";;
 
 let p6 = time lcffol
- default_parser 'p \/ ~p';;
+ default_parser "p \\/ ~p";;
 
 let p7 = time lcffol
- default_parser 'p \/ ~ ~ ~p';;
+ default_parser "p \\/ ~ ~ ~p";;
 
 let p8 = time lcffol
- default_parser '((p ==> q) ==> p) ==> p';;
+ default_parser "((p ==> q) ==> p) ==> p";;
 
 let p9 = time lcffol
- default_parser '(p \/ q) /\ (~p \/ q) /\ (p \/ ~q) ==> ~(~q \/ ~q)';;
+ default_parser "(p \\/ q) /\\ (~p \\/ q) /\\ (p \\/ ~q) ==> ~(~q \\/ ~q)";;
 
 let p10 = time lcffol
- default_parser '(q ==> r) /\ (r ==> p /\ q) /\ (p ==> q /\ r) ==> (p <=> q)';;
+ default_parser "(q ==> r) /\\ (r ==> p /\\ q) /\\ (p ==> q /\\ r) ==> (p <=> q)";;
 
 let p11 = time lcffol
- default_parser 'p <=> p';;
+ default_parser "p <=> p";;
 
 let p12 = time lcffol
- default_parser '((p <=> q) <=> r) <=> (p <=> (q <=> r))';;
+ default_parser "((p <=> q) <=> r) <=> (p <=> (q <=> r))";;
 
 let p13 = time lcffol
- default_parser 'p \/ q /\ r <=> (p \/ q) /\ (p \/ r)';;
+ default_parser "p \\/ q /\\ r <=> (p \\/ q) /\\ (p \\/ r)";;
 
 let p14 = time lcffol
- default_parser '(p <=> q) <=> (q \/ ~p) /\ (~q \/ p)';;
+ default_parser "(p <=> q) <=> (q \\/ ~p) /\\ (~q \\/ p)";;
 
 let p15 = time lcffol
- default_parser 'p ==> q <=> ~p \/ q';;
+ default_parser "p ==> q <=> ~p \\/ q";;
 
 let p16 = time lcffol
- default_parser '(p ==> q) \/ (q ==> p)';;
+ default_parser "(p ==> q) \\/ (q ==> p)";;
 
 let p17 = time lcffol
- default_parser 'p /\ (q ==> r) ==> s <=> (~p \/ q \/ s) /\ (~p \/ ~r \/ s)';;
+ default_parser "p /\\ (q ==> r) ==> s <=> (~p \\/ q \\/ s) /\\ (~p \\/ ~r \\/ s)";;
 
 let p18 = time lcffol
- default_parser 'exists y. forall x. P(y) ==> P(x)';;
+ default_parser "exists y. forall x. P(y) ==> P(x)";;
 
 let p19 = time lcffol
- default_parser 'exists x. forall y z. (P(y) ==> Q(z)) ==> P(x) ==> Q(x)';;
+ default_parser "exists x. forall y z. (P(y) ==> Q(z)) ==> P(x) ==> Q(x)";;
 
 let p20 = time lcffol
  <<(forall x y. exists z. forall w. P(x) /\ Q(y) ==> R(z) /\ U(w))
@@ -11739,10 +11739,10 @@ let p21 = time lcffol
    ==> (exists x. P <=> Q(x))>>;;
 
 let p22 = time lcffol
- default_parser '(forall x. P <=> Q(x)) ==> (P <=> (forall x. Q(x)))';;
+ default_parser "(forall x. P <=> Q(x)) ==> (P <=> (forall x. Q(x)))";;
 
 let p23 = time lcffol
- default_parser '(forall x. P \/ Q(x)) <=> P \/ (forall x. Q(x))';;
+ default_parser "(forall x. P \\/ Q(x)) <=> P \\/ (forall x. Q(x))";;
 
 let p24 = time lcffol
  <<~(exists x. U(x) /\ Q(x)) /\
@@ -11814,7 +11814,7 @@ let p34 = time lcffol
  *****)
 
 let p35 = time lcffol
- default_parser 'exists x y. P(x,y) ==> (forall x y. P(x,y))';;
+ default_parser "exists x y. P(x,y) ==> (forall x y. P(x,y))";;
 
 let p36 = time lcffol
  <<(forall x. exists y. P(x,y)) /\
@@ -11841,7 +11841,7 @@ let p38 = time lcffol
      (exists z w. P(z) /\ R(x,w) /\ R(w,z))))>>;;
 
 let p39 = time lcffol
- default_parser '~(exists x. forall y. P(y,x) <=> ~P(y,y))';;
+ default_parser "~(exists x. forall y. P(y,x) <=> ~P(y,y))";;
 
 let p40 = time lcffol
  <<(exists y. forall x. P(x,y) <=> P(x,x))
@@ -11852,7 +11852,7 @@ let p41 = time lcffol
   ==> ~(exists z. forall x. P(x,z))>>;;
 
 let p42 = time lcffol
- default_parser '~(exists y. forall x. P(x,y) <=> ~(exists z. P(x,z) /\ P(z,x)))';;
+ default_parser "~(exists y. forall x. P(x,y) <=> ~(exists z. P(x,z) /\\ P(z,x)))";;
 
 (***** SEEMS HARD
 let p43 = time lcffol
@@ -11903,7 +11903,7 @@ let p58 = time lcffol
     ((P(x) /\ Q(y)) ==> ((P(v) \/ R(w))  /\ (R(z) ==> Q(v))))>>;;
 
 let p59 = time lcffol
- default_parser '(forall x. P(x) <=> ~P(f(x))) ==> (exists x. P(x) /\ ~P(f(x)))';;
+ default_parser "(forall x. P(x) <=> ~P(f(x))) ==> (exists x. P(x) /\\ ~P(f(x)))";;
 
 let p60 = time lcffol
  <<forall x. P(x,f(x)) <=>
@@ -12312,22 +12312,22 @@ let ewd954 = prove
  <<(forall x y. x <= y <=> x * y = x) /\
    (forall x y. f(x * y) = f(x) * f(y))
    ==> forall x y. x <= y ==> f(x) <= f(y)>>
- [note("eq_sym",default_parser 'forall x y. x = y ==> y = x')
-    using [eq_sym secondary_parser 'x|' secondary_parser 'y|'];
-  note("eq_trans",default_parser 'forall x y z. x = y /\ y = z ==> x = z')
-    using [eq_trans secondary_parser 'x|' secondary_parser 'y|' secondary_parser 'z|'];
-  note("eq_cong",default_parser 'forall x y. x = y ==> f(x) = f(y)')
-    using [axiom_funcong "f" [secondary_parser 'x|'] [secondary_parser 'y|']];
-  assume ["le",default_parser 'forall x y. x <= y <=> x * y = x';
-          "hom",default_parser 'forall x y. f(x * y) = f(x) * f(y)'];
+ [note("eq_sym",default_parser "forall x y. x = y ==> y = x")
+    using [eq_sym secondary_parser "x|" secondary_parser "y|"];
+  note("eq_trans",default_parser "forall x y z. x = y /\\ y = z ==> x = z")
+    using [eq_trans secondary_parser "x|" secondary_parser "y|" secondary_parser "z|"];
+  note("eq_cong",default_parser "forall x y. x = y ==> f(x) = f(y)")
+    using [axiom_funcong "f" [secondary_parser "x|"] [secondary_parser "y|"]];
+  assume ["le",default_parser "forall x y. x <= y <=> x * y = x";
+          "hom",default_parser "forall x y. f(x * y) = f(x) * f(y)"];
   fix "x"; fix "y";
-  assume ["xy",default_parser 'x <= y'];
-  so have default_parser 'x * y = x' by ["le"];
-  so have default_parser 'f(x * y) = f(x)' by ["eq_cong"];
-  so have default_parser 'f(x) = f(x * y)' by ["eq_sym"];
-  so have default_parser 'f(x) = f(x) * f(y)' by ["eq_trans"; "hom"];
-  so have default_parser 'f(x) * f(y) = f(x)' by ["eq_sym"];
-  so conclude default_parser 'f(x) <= f(y)' by ["le"];
+  assume ["xy",default_parser "x <= y"];
+  so have default_parser "x * y = x" by ["le"];
+  so have default_parser "f(x * y) = f(x)" by ["eq_cong"];
+  so have default_parser "f(x) = f(x * y)" by ["eq_sym"];
+  so have default_parser "f(x) = f(x) * f(y)" by ["eq_trans"; "hom"];
+  so have default_parser "f(x) * f(y) = f(x)" by ["eq_sym"];
+  so conclude default_parser "f(x) <= f(y)" by ["le"];
   qed];;
 *)
 
@@ -12339,16 +12339,16 @@ let ewd954 = prove
 prove
  <<(exists x. p(x)) ==> (forall x. p(x) ==> p(f(x)))
    ==> exists y. p(f(f(f(f(y)))))>>
-  [assume ["A",default_parser 'exists x. p(x)'];
-   assume ["B",default_parser 'forall x. p(x) ==> p(f(x))'];
-   note ("C",default_parser 'forall x. p(x) ==> p(f(f(f(f(x)))))')
+  [assume ["A",default_parser "exists x. p(x)"];
+   assume ["B",default_parser "forall x. p(x) ==> p(f(x))"];
+   note ("C",default_parser "forall x. p(x) ==> p(f(f(f(f(x)))))")
    proof
-    [have default_parser 'forall x. p(x) ==> p(f(f(x)))' by ["B"];
-     so conclude default_parser 'forall x. p(x) ==> p(f(f(f(f(x)))))' at once;
+    [have default_parser "forall x. p(x) ==> p(f(f(x)))" by ["B"];
+     so conclude default_parser "forall x. p(x) ==> p(f(f(f(f(x)))))" at once;
      qed];
-   consider ("a",default_parser 'p(a)') by ["A"];
-   take secondary_parser 'a|';
-   so conclude default_parser 'p(f(f(f(f(a)))))' by ["C"];
+   consider ("a",default_parser "p(a)") by ["A"];
+   take secondary_parser "a|";
+   so conclude default_parser "p(f(f(f(f(a)))))" by ["C"];
    qed];;
 
 (* ------------------------------------------------------------------------- *)
@@ -12362,15 +12362,15 @@ let lemma (s,p) (Goals((asl,w)::gls,jfn) as gl) =
 prove
  <<(exists x. p(x)) ==> (forall x. p(x) ==> p(f(x)))
    ==> exists y. p(f(f(f(f(y)))))>>
-  [assume ["A",default_parser 'exists x. p(x)'];
-   assume ["B",default_parser 'forall x. p(x) ==> p(f(x))'];
-   lemma ("C",default_parser 'forall x. p(x) ==> p(f(f(f(f(x)))))');
-     have default_parser 'forall x. p(x) ==> p(f(f(x)))' by ["B"];
-     so conclude default_parser 'forall x. p(x) ==> p(f(f(f(f(x)))))' at once;
+  [assume ["A",default_parser "exists x. p(x)"];
+   assume ["B",default_parser "forall x. p(x) ==> p(f(x))"];
+   lemma ("C",default_parser "forall x. p(x) ==> p(f(f(f(f(x)))))");
+     have default_parser "forall x. p(x) ==> p(f(f(x)))" by ["B"];
+     so conclude default_parser "forall x. p(x) ==> p(f(f(f(f(x)))))" at once;
      qed;
-   consider ("a",default_parser 'p(a)') by ["A"];
-   take secondary_parser 'a|';
-   so conclude default_parser 'p(f(f(f(f(a)))))' by ["C"];
+   consider ("a",default_parser "p(a)") by ["A"];
+   take secondary_parser "a|";
+   so conclude default_parser "p(f(f(f(f(a)))))" by ["C"];
    qed];;
 
 (* ------------------------------------------------------------------------- *)
@@ -12407,120 +12407,120 @@ prove <<p(a) ==> (forall x. p(x) ==> p(f(x)))
 prove
  <<(exists x. p(x)) ==> (forall x. p(x) ==> p(f(x)))
    ==> exists y. p(f(f(f(f(y)))))>>
-  [assume ["A",default_parser 'exists x. p(x)'];
-   assume ["B",default_parser 'forall x. p(x) ==> p(f(x))'];
-   note ("C",default_parser 'forall x. p(x) ==> p(f(f(f(f(x)))))') proof
-    [have default_parser 'forall x. p(x) ==> p(f(f(x)))' by ["B"];
+  [assume ["A",default_parser "exists x. p(x)"];
+   assume ["B",default_parser "forall x. p(x) ==> p(f(x))"];
+   note ("C",default_parser "forall x. p(x) ==> p(f(f(f(f(x)))))") proof
+    [have default_parser "forall x. p(x) ==> p(f(f(x)))" by ["B"];
      so our thesis at once;
      qed];
-   consider ("a",default_parser 'p(a)') by ["A"];
-   take secondary_parser 'a|';
+   consider ("a",default_parser "p(a)") by ["A"];
+   take secondary_parser "a|";
    so our thesis by ["C"];
    qed];;
 
 prove <<forall a. p(a) ==> (forall x. p(x) ==> p(f(x)))
                   ==> exists y. p(y) /\ p(f(y))>>
       [fix "c";
-       assume ["A",default_parser 'p(c)'];
-       assume ["B",default_parser 'forall x. p(x) ==> p(f(x))'];
-       take secondary_parser 'c|';
-       conclude default_parser 'p(c)' by ["A"];
-       note ("C",default_parser 'p(c) ==> p(f(c))') by ["B"];
+       assume ["A",default_parser "p(c)"];
+       assume ["B",default_parser "forall x. p(x) ==> p(f(x))"];
+       take secondary_parser "c|";
+       conclude default_parser "p(c)" by ["A"];
+       note ("C",default_parser "p(c) ==> p(f(c))") by ["B"];
        so our thesis by ["C"; "A"];
        qed];;
 
 prove <<p(c) ==> (forall x. p(x) ==> p(f(x)))
                   ==> exists y. p(y) /\ p(f(y))>>
-      [assume ["A",default_parser 'p(c)'];
-       assume ["B",default_parser 'forall x. p(x) ==> p(f(x))'];
-       take secondary_parser 'c|';
-       conclude default_parser 'p(c)' by ["A"];
+      [assume ["A",default_parser "p(c)"];
+       assume ["B",default_parser "forall x. p(x) ==> p(f(x))"];
+       take secondary_parser "c|";
+       conclude default_parser "p(c)" by ["A"];
        our thesis by ["A"; "B"];
        qed];;
 
 prove <<forall a. p(a) ==> (forall x. p(x) ==> p(f(x)))
                   ==> exists y. p(y) /\ p(f(y))>>
       [fix "c";
-       assume ["A",default_parser 'p(c)'];
-       assume ["B",default_parser 'forall x. p(x) ==> p(f(x))'];
-       take secondary_parser 'c|';
-       conclude default_parser 'p(c)' by ["A"];
-       note ("C",default_parser 'p(c) ==> p(f(c))') by ["B"];
+       assume ["A",default_parser "p(c)"];
+       assume ["B",default_parser "forall x. p(x) ==> p(f(x))"];
+       take secondary_parser "c|";
+       conclude default_parser "p(c)" by ["A"];
+       note ("C",default_parser "p(c) ==> p(f(c))") by ["B"];
        our thesis by ["C"; "A"];
        qed];;
 
 prove <<forall a. p(a) ==> (forall x. p(x) ==> p(f(x)))
                   ==> exists y. p(y) /\ p(f(y))>>
       [fix "c";
-       assume ["A",default_parser 'p(c)'];
-       assume ["B",default_parser 'forall x. p(x) ==> p(f(x))'];
-       take secondary_parser 'c|';
-       note ("D",default_parser 'p(c)') by ["A"];
-       note ("C",default_parser 'p(c) ==> p(f(c))') by ["B"];
+       assume ["A",default_parser "p(c)"];
+       assume ["B",default_parser "forall x. p(x) ==> p(f(x))"];
+       take secondary_parser "c|";
+       note ("D",default_parser "p(c)") by ["A"];
+       note ("C",default_parser "p(c) ==> p(f(c))") by ["B"];
        our thesis by ["C"; "A"; "D"];
        qed];;
 
 
-prove default_parser '(p(a) \/ p(b)) ==> q ==> exists y. p(y)'
-  [assume ["A",default_parser 'p(a) \/ p(b)'];
-   assume ["",default_parser 'q'];
-   cases default_parser 'p(a) \/ p(b)' by ["A"];
-     take secondary_parser 'a|';
+prove default_parser "(p(a) \\/ p(b)) ==> q ==> exists y. p(y)"
+  [assume ["A",default_parser "p(a) \\/ p(b)"];
+   assume ["",default_parser "q"];
+   cases default_parser "p(a) \\/ p(b)" by ["A"];
+     take secondary_parser "a|";
      so our thesis at once;
      qed;
 
-     take secondary_parser 'b|';
+     take secondary_parser "b|";
      so our thesis at once;
      qed];;
 
 prove
-  default_parser '(p(a) \/ p(b)) /\ (forall x. p(x) ==> p(f(x))) ==> exists y. p(f(y))'
-  [assume ["base",default_parser 'p(a) \/ p(b)';
-           "Step",default_parser 'forall x. p(x) ==> p(f(x))'];
-   cases default_parser 'p(a) \/ p(b)' by ["base"];
-     so note("A",default_parser 'p(a)') at once;
-     note ("X",default_parser 'p(a) ==> p(f(a))') by ["Step"];
-     take secondary_parser 'a|';
+  default_parser "(p(a) \\/ p(b)) /\\ (forall x. p(x) ==> p(f(x))) ==> exists y. p(f(y))"
+  [assume ["base",default_parser "p(a) \\/ p(b)";
+           "Step",default_parser "forall x. p(x) ==> p(f(x))"];
+   cases default_parser "p(a) \\/ p(b)" by ["base"];
+     so note("A",default_parser "p(a)") at once;
+     note ("X",default_parser "p(a) ==> p(f(a))") by ["Step"];
+     take secondary_parser "a|";
      our thesis by ["A"; "X"];
      qed;
 
-     take secondary_parser 'b|';
+     take secondary_parser "b|";
      so our thesis by ["Step"];
      qed];;
 
 prove
- default_parser '(exists x. p(x)) ==> (forall x. p(x) ==> p(f(x))) ==> exists y. p(f(y))'
-  [assume ["A",default_parser 'exists x. p(x)'];
-   assume ["B",default_parser 'forall x. p(x) ==> p(f(x))'];
-   consider ("a",default_parser 'p(a)') by ["A"];
-   so note ("concl",default_parser 'p(f(a))') by ["B"];
-   take secondary_parser 'a|';
+ default_parser "(exists x. p(x)) ==> (forall x. p(x) ==> p(f(x))) ==> exists y. p(f(y))"
+  [assume ["A",default_parser "exists x. p(x)"];
+   assume ["B",default_parser "forall x. p(x) ==> p(f(x))"];
+   consider ("a",default_parser "p(a)") by ["A"];
+   so note ("concl",default_parser "p(f(a))") by ["B"];
+   take secondary_parser "a|";
    our thesis by ["concl"];
    qed];;
 
 prove <<(forall x. p(x) ==> q(x)) ==> (forall x. q(x) ==> p(x))
        ==> (p(a) <=> q(a))>>
-  [assume ["A",default_parser 'forall x. p(x) ==> q(x)'];
-   assume ["B",default_parser 'forall x. q(x) ==> p(x)'];
-   note ("von",default_parser 'p(a) ==> q(a)') by ["A"];
-   note ("bis",default_parser 'q(a) ==> p(a)') by ["B"];
+  [assume ["A",default_parser "forall x. p(x) ==> q(x)"];
+   assume ["B",default_parser "forall x. q(x) ==> p(x)"];
+   note ("von",default_parser "p(a) ==> q(a)") by ["A"];
+   note ("bis",default_parser "q(a) ==> p(a)") by ["B"];
    our thesis by ["von"; "bis"];
    qed];;
 
 (*** Mizar-like
 
 prove
-  default_parser '(p(a) \/ p(b)) /\ (forall x. p(x) ==> p(f(x))) ==> exists y. p(f(y))'
-  [assume ["A",default_parser 'antecedent'];
-   note ("Step",default_parser 'forall x. p(x) ==> p(f(x))') by ["A"];
+  default_parser "(p(a) \\/ p(b)) /\\ (forall x. p(x) ==> p(f(x))) ==> exists y. p(f(y))"
+  [assume ["A",default_parser "antecedent"];
+   note ("Step",default_parser "forall x. p(x) ==> p(f(x))") by ["A"];
    per_cases by ["A"];
-     suppose ("base",default_parser 'p(a)');
-     note ("X",default_parser 'p(a) ==> p(f(a))') by ["Step"];
-     take secondary_parser 'a|';
+     suppose ("base",default_parser "p(a)");
+     note ("X",default_parser "p(a) ==> p(f(a))") by ["Step"];
+     take secondary_parser "a|";
      our thesis by ["base"; "X"];
      qed;
 
-     suppose ("base",default_parser 'p(b)');
+     suppose ("base",default_parser "p(b)");
      our thesis by ["Step"; "base"];
      qed;
    endcase];;
@@ -12541,10 +12541,10 @@ let double_th th =
   let tm = concl th in modusponens (modusponens (and_pair tm tm) th) th;;
 
 let testcase n =
-  gen "x" (funpow n double_th (lcftaut default_parser 'p(x) ==> q(1) \/ p(x)'));;
+  gen "x" (funpow n double_th (lcftaut default_parser "p(x) ==> q(1) \\/ p(x)"));;
 
-let test n = time (spec secondary_parser '2|') (testcase n),
-             time (subst ("x" |=> secondary_parser '2|')) (concl(testcase n));
+let test n = time (spec secondary_parser "2|") (testcase n),
+             time (subst ("x" |=> secondary_parser "2|")) (concl(testcase n));
              ();;
 
 test 10;;
@@ -12615,7 +12615,7 @@ let rec gform fm =
 (* ------------------------------------------------------------------------- *)
 
 (*
-gform default_parser '~(x = 0)';;
+gform default_parser "~(x = 0)";;
 *)
 
 (* ------------------------------------------------------------------------- *)
@@ -12623,8 +12623,8 @@ gform default_parser '~(x = 0)';;
 (* ------------------------------------------------------------------------- *)
 
 (*
-gform default_parser 'x = x';;
-gform default_parser '0 < 0';;
+gform default_parser "x = x";;
+gform default_parser "0 < 0";;
 *)
 
 (* ------------------------------------------------------------------------- *)
@@ -12990,7 +12990,7 @@ and robeval tm =
 (* ------------------------------------------------------------------------- *)
 
 (*
-robeval secondary_parser 'S(0) + (S(S(0)) * ((S(0) + S(S(0)) + S(0))))|';;
+robeval secondary_parser "S(0) + (S(S(0)) * ((S(0) + S(S(0)) + S(0))))|";;
 *)
 
 (* ------------------------------------------------------------------------- *)
@@ -13015,85 +13015,85 @@ let robinson_consequences =
 
 let robinson_thm =
   prove (Imp(robinson,robinson_consequences))
-  [note("eq_refl",default_parser 'forall x. x = x') using [axiom_eqrefl (Var "x")];
-   note("eq_trans",default_parser 'forall x y z. x = y ==> y = z ==> x = z')
+  [note("eq_refl",default_parser "forall x. x = x") using [axiom_eqrefl (Var "x")];
+   note("eq_trans",default_parser "forall x y z. x = y ==> y = z ==> x = z")
       using [eq_trans (Var "x") (Var "y") (Var "z")];
-   note("eq_sym",default_parser 'forall x y. x = y ==> y = x')
+   note("eq_sym",default_parser "forall x y. x = y ==> y = x")
       using [eq_sym (Var "x") (Var "y")];
-   note("suc_cong",default_parser 'forall a b. a = b ==> S(a) = S(b)')
+   note("suc_cong",default_parser "forall a b. a = b ==> S(a) = S(b)")
       using [axiom_funcong "S" [Var "a"] [Var "b"]];
    note("add_cong",
-        default_parser 'forall a b c d. a = b /\ c = d ==> a + c = b + d')
+        default_parser "forall a b c d. a = b /\\ c = d ==> a + c = b + d")
       using [axiom_funcong "+" [Var "a"; Var "c"] [Var "b"; Var "d"]];
    note("le_cong",
-        default_parser 'forall a b c d. a = b /\ c = d ==> a <= c ==> b <= d')
+        default_parser "forall a b c d. a = b /\\ c = d ==> a <= c ==> b <= d")
       using [axiom_predcong "<=" [Var "a"; Var "c"] [Var "b"; Var "d"]];
    note("lt_cong",
-        default_parser 'forall a b c d. a = b /\ c = d ==> a < c ==> b < d')
+        default_parser "forall a b c d. a = b /\\ c = d ==> a < c ==> b < d")
       using [axiom_predcong "<" [Var "a"; Var "c"] [Var "b"; Var "d"]];
 
-   assume ["suc_inj",default_parser 'forall m n. S(m) = S(n) ==> m = n';
-           "num_nz",default_parser 'forall n. ~(n = 0) <=> exists m. n = S(m)';
-           "add_0",default_parser 'forall n. 0 + n = n';
-           "add_suc",default_parser 'forall m n. S(m) + n = S(m + n)';
-           "mul_0",default_parser 'forall n. 0 * n = 0';
-           "mul_suc",default_parser 'forall m n. S(m) * n = n + m * n';
-           "le_def",default_parser 'forall m n. m <= n <=> exists d. m + d = n';
-           "lt_def",default_parser 'forall m n. m < n <=> S(m) <= n'];
-   note("not_suc_0",default_parser 'forall n. ~(S(n) = 0)') by ["num_nz"; "eq_refl"];
-   so conclude default_parser 'forall n. S(n) = 0 ==> false' at once;
-   so conclude default_parser 'forall n. 0 = S(n) ==> false' by ["eq_sym"];
-   note("num_cases",default_parser 'forall n. (n = 0) \/ exists m. n = S(m)')
+   assume ["suc_inj",default_parser "forall m n. S(m) = S(n) ==> m = n";
+           "num_nz",default_parser "forall n. ~(n = 0) <=> exists m. n = S(m)";
+           "add_0",default_parser "forall n. 0 + n = n";
+           "add_suc",default_parser "forall m n. S(m) + n = S(m + n)";
+           "mul_0",default_parser "forall n. 0 * n = 0";
+           "mul_suc",default_parser "forall m n. S(m) * n = n + m * n";
+           "le_def",default_parser "forall m n. m <= n <=> exists d. m + d = n";
+           "lt_def",default_parser "forall m n. m < n <=> S(m) <= n"];
+   note("not_suc_0",default_parser "forall n. ~(S(n) = 0)") by ["num_nz"; "eq_refl"];
+   so conclude default_parser "forall n. S(n) = 0 ==> false" at once;
+   so conclude default_parser "forall n. 0 = S(n) ==> false" by ["eq_sym"];
+   note("num_cases",default_parser "forall n. (n = 0) \\/ exists m. n = S(m)")
          by ["num_nz"];
-   note("suc_inj_eq",default_parser 'forall m n. S(m) = S(n) <=> m = n')
+   note("suc_inj_eq",default_parser "forall m n. S(m) = S(n) <=> m = n")
      by ["suc_inj"; "suc_cong"];
    so conclude
-     default_parser 'forall m n. (m = n ==> false) ==> (S(m) = S(n) ==> false)'
+     default_parser "forall m n. (m = n ==> false) ==> (S(m) = S(n) ==> false)"
      at once;
-   conclude default_parser 'forall m n. (exists d. m + d = n) ==> m <= n'
+   conclude default_parser "forall m n. (exists d. m + d = n) ==> m <= n"
      by ["le_def"];
-   conclude default_parser 'forall m n. S(m) <= n ==> m < n' by ["lt_def"];
+   conclude default_parser "forall m n. S(m) <= n ==> m < n" by ["lt_def"];
    conclude <<forall m n. (forall d. d <= n ==> d = m ==> false)
                           ==> m <= n ==> false>>
      by ["eq_refl"; "le_cong"];
    conclude <<forall m n. (forall d. d < n ==> d = m ==> false)
                           ==> m < n ==> false>>
      by ["eq_refl"; "lt_cong"];
-   have default_parser '0 <= 0' by ["le_def"; "add_0"];
-   so have default_parser 'forall x. x = 0 ==> x <= 0'
+   have default_parser "0 <= 0" by ["le_def"; "add_0"];
+   so have default_parser "forall x. x = 0 ==> x <= 0"
      by ["le_cong"; "eq_refl"; "eq_sym"];
-   so conclude default_parser 'forall n. n <= 0 \/ (exists m. S(m) = n)'
+   so conclude default_parser "forall n. n <= 0 \\/ (exists m. S(m) = n)"
      by ["num_nz"; "eq_sym"];
-   note("add_eq_0",default_parser 'forall m n. m + n = 0 ==> m = 0 /\ n = 0') proof
+   note("add_eq_0",default_parser "forall m n. m + n = 0 ==> m = 0 /\\ n = 0") proof
     [fix "m"; fix "n";
-     assume ["A",default_parser 'm + n = 0'];
-     cases default_parser 'm = 0 \/ exists p. m = S(p)' by ["num_cases"];
-       so conclude default_parser 'm = 0' at once;
-       so have default_parser 'm + n = 0 + n' by ["add_cong"; "eq_refl"];
+     assume ["A",default_parser "m + n = 0"];
+     cases default_parser "m = 0 \\/ exists p. m = S(p)" by ["num_cases"];
+       so conclude default_parser "m = 0" at once;
+       so have default_parser "m + n = 0 + n" by ["add_cong"; "eq_refl"];
        so our thesis by ["A"; "add_0"; "eq_sym"; "eq_trans"];
      qed;
-       so consider ("p",default_parser 'm = S(p)') at once;
-       so have default_parser 'm + n = S(p) + n' by ["add_cong"; "eq_refl"];
-       so have default_parser 'm + n = S(p + n)' by ["eq_trans"; "add_suc"];
-       so have default_parser 'S(p + n) = 0' by ["A"; "eq_sym"; "eq_trans"];
+       so consider ("p",default_parser "m = S(p)") at once;
+       so have default_parser "m + n = S(p) + n" by ["add_cong"; "eq_refl"];
+       so have default_parser "m + n = S(p + n)" by ["eq_trans"; "add_suc"];
+       so have default_parser "S(p + n) = 0" by ["A"; "eq_sym"; "eq_trans"];
        so our thesis by ["not_suc_0"];
      qed];
-   so conclude default_parser 'forall n. n <= 0 ==> n = 0' by ["le_def"];
-   have default_parser 'forall m n. S(m) <= S(n) ==> m <= n' proof
+   so conclude default_parser "forall n. n <= 0 ==> n = 0" by ["le_def"];
+   have default_parser "forall m n. S(m) <= S(n) ==> m <= n" proof
     [fix "m"; fix "n";
-     assume ["lesuc",default_parser 'S(m) <= S(n)'];
-     so consider("d",default_parser 'S(m) + d = S(n)') by ["le_def"];
-     so have default_parser 'S(m + d) = S(n)' by ["add_suc"; "eq_sym"; "eq_trans"];
-     so have default_parser 'm + d = n' by ["suc_inj"];
-     so conclude default_parser 'm <= n' by ["le_def"];
+     assume ["lesuc",default_parser "S(m) <= S(n)"];
+     so consider("d",default_parser "S(m) + d = S(n)") by ["le_def"];
+     so have default_parser "S(m + d) = S(n)" by ["add_suc"; "eq_sym"; "eq_trans"];
+     so have default_parser "m + d = n" by ["suc_inj"];
+     so conclude default_parser "m <= n" by ["le_def"];
      qed];
-   so conclude default_parser 'forall m n. S(m) <= S(n) ==> m <= n' at once;
-   so conclude default_parser 'forall m n. m < S(n) ==> m <= n' by ["lt_def"];
+   so conclude default_parser "forall m n. S(m) <= S(n) ==> m <= n" at once;
+   so conclude default_parser "forall m n. m < S(n) ==> m <= n" by ["lt_def"];
    fix "n";
-   assume ["hyp",default_parser 'n < 0'];
-   so have default_parser 'S(n) <= 0' by ["lt_def"];
-   so consider("d",default_parser 'S(n) + d = 0') by ["le_def"];
-   so have default_parser 'S(n + d) = 0' by ["add_suc"; "eq_trans"; "eq_sym"];
+   assume ["hyp",default_parser "n < 0"];
+   so have default_parser "S(n) <= 0" by ["lt_def"];
+   so consider("d",default_parser "S(n) + d = 0") by ["le_def"];
+   so have default_parser "S(n + d) = 0" by ["add_suc"; "eq_trans"; "eq_sym"];
    so our thesis by ["not_suc_0"];
    qed];;
 
@@ -13127,9 +13127,9 @@ let rob_ne s t =
   right_imp_trans (right_mp (imp_trans sth xth) tth) th;;
 
 (*
-rob_ne secondary_parser 'S(0) + S(0) + S(0)|' secondary_parser 'S(S(0)) * S(S(0))|';;
-rob_ne secondary_parser '0 + 0 * S(0)|' secondary_parser 'S(S(0)) + 0|';;
-rob_ne secondary_parser 'S(S(0)) + 0|' secondary_parser '0 + 0 + 0 * 0|';;
+rob_ne secondary_parser "S(0) + S(0) + S(0)|" secondary_parser "S(S(0)) * S(S(0))|";;
+rob_ne secondary_parser "0 + 0 * S(0)|" secondary_parser "S(S(0)) + 0|";;
+rob_ne secondary_parser "S(S(0)) + 0|" secondary_parser "0 + 0 + 0 * 0|";;
 *)
 
 (* ------------------------------------------------------------------------- *)
@@ -13303,23 +13303,23 @@ let godel_2 = prove
        (forall p q r. |--(imp(imp(p,imp(q,r)),imp(imp(p,q),imp(p,r)))))
        ==> |--(imp(G,imp(Pr(G),F))) /\ |--(imp(imp(Pr(G),F),G))
            ==> |--(imp(Pr(F),F)) ==> |--(F)>>
- [assume["lob1",default_parser 'forall p. |--(p) ==> |--(Pr(p))';
-         "lob2",default_parser 'forall p q. |--(imp(Pr(imp(p,q)),imp(Pr(p),Pr(q))))';
-         "lob3",default_parser 'forall p. |--(imp(Pr(p),Pr(Pr(p))))'];
+ [assume["lob1",default_parser "forall p. |--(p) ==> |--(Pr(p))";
+         "lob2",default_parser "forall p q. |--(imp(Pr(imp(p,q)),imp(Pr(p),Pr(q))))";
+         "lob3",default_parser "forall p. |--(imp(Pr(p),Pr(Pr(p))))"];
   assume["logic",<<(forall p q. |--(imp(p,q)) /\ |--(p) ==> |--(q)) /\
                    (forall p q. |--(imp(q,imp(p,q)))) /\
                    (forall p q r. |--(imp(imp(p,imp(q,r)),
                                       imp(imp(p,q),imp(p,r)))))>>];
-  assume ["fix1",secondary_parser '--(imp(G,imp(Pr(G),F)))';
-          "fix2",secondary_parser '--(imp(imp(Pr(G),F),G))'];
-  assume["consistency",secondary_parser '--(imp(Pr(F),F))'];
-  have secondary_parser '--(Pr(imp(G,imp(Pr(G),F))))' by ["lob1"; "fix1"];
-  so have secondary_parser '--(imp(Pr(G),Pr(imp(Pr(G),F))))' by ["lob2"; "logic"];
-  so have secondary_parser '--(imp(Pr(G),imp(Pr(Pr(G)),Pr(F))))' by ["lob2"; "logic"];
-  so have secondary_parser '--(imp(Pr(G),Pr(F)))' by ["lob3"; "logic"];
-  so note("L",secondary_parser '--(imp(Pr(G),F))') by ["consistency"; "logic"];
-  so have secondary_parser '--(G)' by ["fix2"; "logic"];
-  so have secondary_parser '--(Pr(G))' by ["lob1"; "logic"];
-  so conclude secondary_parser '--(F)' by ["L"; "logic"];
+  assume ["fix1",secondary_parser "--(imp(G,imp(Pr(G),F)))";
+          "fix2",secondary_parser "--(imp(imp(Pr(G),F),G))"];
+  assume["consistency",secondary_parser "--(imp(Pr(F),F))"];
+  have secondary_parser "--(Pr(imp(G,imp(Pr(G),F))))" by ["lob1"; "fix1"];
+  so have secondary_parser "--(imp(Pr(G),Pr(imp(Pr(G),F))))" by ["lob2"; "logic"];
+  so have secondary_parser "--(imp(Pr(G),imp(Pr(Pr(G)),Pr(F))))" by ["lob2"; "logic"];
+  so have secondary_parser "--(imp(Pr(G),Pr(F)))" by ["lob3"; "logic"];
+  so note("L",secondary_parser "--(imp(Pr(G),F))") by ["consistency"; "logic"];
+  so have secondary_parser "--(G)" by ["fix2"; "logic"];
+  so have secondary_parser "--(Pr(G))" by ["lob1"; "logic"];
+  so conclude secondary_parser "--(F)" by ["L"; "logic"];
   qed];;
 *)
