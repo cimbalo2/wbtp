@@ -1,0 +1,1 @@
+cat atp_interactive.ml| perl -pe "s/<<\|(.*?)>>/secondary_parser '\1'/g"| perl -pe "s/<<(.*?)>>/primary_parser '\1'/g"
