@@ -948,7 +948,7 @@ let rec string_of_exp pr e =
 (* Install it.                                                               *)
 (* ------------------------------------------------------------------------- *)
 
-let print_exp e = Format.print_string ("default_parser ""^string_of_exp 0 e^""");;
+let print_exp e = Format.print_string ("<<"^string_of_exp 0 e^">>");;
 
 #install_printer print_exp;;
 
